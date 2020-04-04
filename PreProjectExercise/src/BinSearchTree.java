@@ -136,7 +136,7 @@ class BinSearchTree {
 		if (cur.left!=null)
 			print_tree(cur.left,out);
 		String s = cur.data.id+"        "+cur.data.faculty+"     "+
-                                 cur.data.major+ "       "+cur.data.year + "\n";
+                                 cur.data.major+ "       "+cur.data.year;
 		out.println(s);
 		System.out.println(s);
 		if (cur.right!=null)
@@ -157,5 +157,9 @@ class BinSearchTree {
 			e.printStackTrace();
 		}
 
+	}
+
+	public Node getRoot() {
+		return root;
 	}
 }
