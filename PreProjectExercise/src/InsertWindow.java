@@ -1,5 +1,7 @@
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,9 +39,7 @@ public class InsertWindow extends JDialog {
 		super(owner, title);
 		setSize(500,150);
 		setLayout(new BorderLayout());
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setResizable(false);
-				
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);			
 		
 		// North Panel
 		north = new JPanel();
@@ -84,6 +84,7 @@ public class InsertWindow extends JDialog {
 		
 		add(south, BorderLayout.SOUTH);
 		setModalityType(ModalityType.APPLICATION_MODAL);
+
 		setVisible(true);
 		
 
