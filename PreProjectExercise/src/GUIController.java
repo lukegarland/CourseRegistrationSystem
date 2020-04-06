@@ -50,10 +50,14 @@ public class GUIController {
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
+
 			String student = theView.getNewStudentInfo();
-			theView.showMessage("Added: " + student);
-			theModel.addNewStudent(student);
-			
+			if(student != null)
+			{
+				theView.showMessage("Added: " + student);
+				theModel.addNewStudent(student);
+			}
+
 		}
 	}
 	/**

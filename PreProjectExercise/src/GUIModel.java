@@ -94,7 +94,8 @@ public class GUIModel {
 	 */
 	public void addNewStudent(String student) {
 		String [] fields = student.split(" ");
-		BST.insert(fields[0], fields[1], fields[2], fields[3]);
+		if(fields.length == 4)
+			BST.insert(fields[0], fields[1], fields[2], fields[3]);
 		
 	}
 

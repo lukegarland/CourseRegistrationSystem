@@ -144,7 +144,7 @@ public class GUIView extends JFrame{
 	 * @param treeContent text to be set into the text area
 	 */
 	public void addTextContent(String treeContent) {
-		myTextArea.setText(treeContent + "Test");
+		myTextArea.setText(treeContent);
 	}
 
 	/**
@@ -204,28 +204,18 @@ public class GUIView extends JFrame{
 
 	/**
 	 * Prompts the user to enter the data of a new 
-	 * student to be entered to the tree
+	 * student to be entered to the tree. Will open an InsertWindow JDialog window.
 	 * @return data of the new student separated by spaces
 	 */
 	public String getNewStudentInfo() {
-		UIManager.put("OptionPane.cancelButtonText", "Return to Main Window");
-		UIManager.put("OptionPane.okButtonText", "Insert");
-		JTextField field1 = new JTextField(10);
-		JTextField field2 = new JTextField(10);
-		JTextField field3 = new JTextField(10);
-		JTextField field4 = new JTextField(10);
-		Object[] message = {
-				"Enter the Student ID:", field1,
-				"Enter Faculty:", field2,
-				"Enter Student's Major:", field3,
-				"Enter Year:", field4,
-			};
-		int option = JOptionPane.showConfirmDialog(null, message, "Input", JOptionPane.OK_CANCEL_OPTION);
-		if (option == JOptionPane.OK_OPTION) {
-			String id = field1.getText() + " " + field2.getText() + " " + field3.getText() + " " + field4.getText();
-			return id;
-		}
-		return null;
+		
+		
+		InsertWindow iw = new InsertWindow(this, "Insert");
+		
+		while(iw.isVisible()); // Wait for dialog to close
+		
+		return iw.getStudentInfo();
+
 	}
 	
 }

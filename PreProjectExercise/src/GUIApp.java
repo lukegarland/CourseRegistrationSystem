@@ -11,6 +11,7 @@ public class GUIApp {
 	 * @param args Default - not used
 	 */
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		GUIController myGUI = new GUIController(new GUIModel(), new GUIView());
 	}
 
