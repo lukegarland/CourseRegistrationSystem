@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * View class for a course registration system.
@@ -76,7 +77,17 @@ public class GUIView extends JFrame{
 	 */
 	public GUIView() {
 		super("Main Window");
-		setSize(500, 400);
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -107,6 +118,7 @@ public class GUIView extends JFrame{
 		add(textPanel, BorderLayout.NORTH);
 		add(buttonPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
+		pack();
 		setVisible(true);
 	}
 	
