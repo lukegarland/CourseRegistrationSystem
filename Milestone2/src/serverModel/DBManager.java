@@ -7,15 +7,25 @@ import java.util.ArrayList;
 //program
 public class DBManager {
 	
-	ArrayList <Course> courseList;
-
-	public DBManager () {
-		courseList = new ArrayList<Course>();
+	private volatile ArrayList <Course> courseList;
+	private volatile ArrayList <Student> studentList;
+	
+	
+	public synchronized ArrayList<Course> getCourseList() {
+		return courseList;
 	}
 
-	public ArrayList<Course> readFromDataBase() 
-	{
 
+
+	public synchronized ArrayList<Student> getStudentList() {
+		return studentList;
+	}
+	
+
+
+	public void loadDatabaseSim()
+	{
+		courseList = new ArrayList<Course>();
 		courseList.add(new Course ("ENGG", 233));
 		courseList.get(0).addOffering(new CourseOffering(0, 150));
 		courseList.add(new Course ("ENSF", 409));
@@ -43,8 +53,15 @@ public class DBManager {
 		courseList.get(7).addOffering(new CourseOffering(0, 0x42));
 		courseList.get(7).addOffering(new CourseOffering(1, 0x2B - 1));
 		
+		studentList = new ArrayList<Student>();
 		
-		return courseList;
+		studentList.add(new Student ("Sara", 1));
+		studentList.add(new Student ("Bob", 2));
+		studentList.add(new Student ("Joe", 3));
+		studentList.add(new Student ("Billy", 5));
+		studentList.add(new Student ("Megan", 10));
+		studentList.add(new Student ("Michael", 42));
+		studentList.add(new Student ("Taylor", 17));
+		
 	}
-
 }

@@ -16,7 +16,8 @@ public class CourseCatalogue {
 	{
 		// TODO Auto-generated method stub
 		DBManager db = new DBManager();
-		setCourseList(db.readFromDataBase());
+		db.loadDatabaseSim();
+		setCourseList(db.getCourseList());
 		
 	}
 	public void createCourseOffering (Course c, int secNum, int secCap) 

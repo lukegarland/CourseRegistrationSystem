@@ -3,8 +3,6 @@ package serverModel;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import ex1.Tool;
-
 public class RegistrationApp {
 	
 	CourseCatalogue courseCatalogue;
