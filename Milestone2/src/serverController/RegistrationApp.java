@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 
 import common.Messages;
 import serverModel.DBManager;
@@ -57,6 +58,62 @@ public class RegistrationApp implements Runnable, Messages
 
 	private String actOnMessage(String input) {
 		// TODO
+		
+		String [] inputTokens = input.split("//s+");
+		String type = inputTokens[0];
+		String[] content = Arrays.copyOfRange(inputTokens, 1, inputTokens.length);
+		
+		
+		String rv;
+		
+		switch(type)
+		{
+		
+			case "s":
+				rv = searchCourseCatalogue(content);
+				break;
+			case "a":
+				rv = addStudentToCourse(content);
+				break;
+			case "r":
+				rv = removeStudentFromCourse(content);
+				break;
+			case "c":
+				rv = viewCatalogue(content);
+				break;
+			case "e":
+				rv = viewStudentCourse(content);
+				break;
+
+			default: 
+				rv = "Error";
+		}
+
+		return rv;
+	}
+
+	private String viewStudentCourse(String[] content) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String viewCatalogue(String[] content) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String removeStudentFromCourse(String[] content) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String addStudentToCourse(String[] content) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String searchCourseCatalogue(String[] content) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
