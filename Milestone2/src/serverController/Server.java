@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.naming.CommunicationException;
+
 import serverModel.DBManager;
 
 public class Server {
@@ -63,6 +65,7 @@ public class Server {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Server server = new Server(8099);
+		server.communicateWithClient();
 		
 	}
 

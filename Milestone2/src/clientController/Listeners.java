@@ -45,7 +45,6 @@ public class Listeners
 	 */
 	private void addRemoveDialog() {
 		AddRemoveStudent addRemoveDialog = new AddRemoveStudent(mainFrame);
-		
 		addRemoveDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
 			String studentName = addRemoveDialog.getStudentName();
 			System.out.println(studentName);

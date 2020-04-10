@@ -30,7 +30,7 @@ public class LoginWindow extends JDialog {
 	public LoginWindow(JFrame owner, String title)
 	{
 		super(owner, title);
-		setSize(500,150);
+		
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);			
 		
@@ -64,7 +64,7 @@ public class LoginWindow extends JDialog {
 		
 		add(south, BorderLayout.SOUTH);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-
+		pack();
 		setVisible(true);
 		
 

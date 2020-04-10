@@ -110,7 +110,6 @@ public class AddRemoveStudent extends JDialog {
 		north.add(studentName);
 		north.add(submitButton);
 		add(north, BorderLayout.NORTH);
-		
 		pack();
 		setVisible(true);
 	}

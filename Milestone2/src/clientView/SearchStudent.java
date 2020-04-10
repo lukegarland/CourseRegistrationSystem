@@ -1,6 +1,8 @@
 package clientView;
 
 import java.awt.*;
+import java.awt.Dialog.ModalityType;
+
 import javax.swing.*;
 
 public class SearchStudent extends JDialog{
@@ -75,6 +77,7 @@ public class SearchStudent extends JDialog{
 		
 		center.add(studentContentScroll);
 		add(center, BorderLayout.CENTER);
+		
 		
 		pack();
 		setVisible(true);

@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.sun.java.accessibility.util.GUIInitializedListener;
+
 /**
  * @author lukeg
  *
@@ -27,24 +29,27 @@ public class Client implements Messages
 	
 	
 	public Client(String serverName, int portNumber) {
+
 		try {
 			socket = new Socket(serverName, portNumber);
 			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			socketOut = new PrintWriter(socket.getOutputStream(), true);
+			
+			GUI = new MainFrame();
+			
 		} catch (IOException e) {
-			System.err.println(e.getStackTrace());
+			e.printStackTrace();
 		}
-		GUI = new MainFrame("Course Registration System");
 	}
 	
 	
 	/**
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		
 		Client client = new Client("localhost", 8099);
-		
 	}
 	
 	public String communicate(String messageType, String content)

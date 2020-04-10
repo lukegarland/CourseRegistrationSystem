@@ -17,12 +17,15 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import clientController.Listeners;
+
 /**
  * @author lukeg
  *
  */
 public class MainFrame extends JFrame {
 
+	private Listeners l;
 	/**
 	 * Default
 	 */
@@ -115,8 +118,12 @@ public class MainFrame extends JFrame {
 		add(topButtonPanel, BorderLayout.SOUTH);
 		//add(bottomButtonPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
+		
 		pack();
 		setVisible(true);
+		
+		l = new Listeners(this); // Create Listeners/GUI Controller
+		
 		LoginWindow temp = new LoginWindow(this, "Login Window");
 	}
 
