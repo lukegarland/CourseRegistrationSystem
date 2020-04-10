@@ -69,19 +69,19 @@ public class RegistrationApp implements Runnable, Messages
 		switch(type)
 		{
 		
-			case "s":
+			case Messages.searchCatalogue:
 				rv = searchCourseCatalogue(content);
 				break;
-			case "a":
+			case Messages.addCourse:
 				rv = addStudentToCourse(content);
 				break;
-			case "r":
+			case Messages.removeCourse:
 				rv = removeStudentFromCourse(content);
 				break;
-			case "c":
+			case Messages.getCatalogue:
 				rv = viewCatalogue(content);
 				break;
-			case "e":
+			case Messages.searchStudentCourses:
 				rv = viewStudentCourse(content);
 				break;
 
