@@ -146,6 +146,18 @@ public class MainFrame extends JFrame {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public JButton getAddRemove() {
+		return addRemove;
+	}
+	
+	public JButton getSearchCatalogue() {
+		return searchCatalogue;
+	}
+	
+	public JButton getViewStudentRegs() {
+		return viewStudentRegs;
+	}
+	
 	public static void main(String[] args) {
 		MainFrame test = new MainFrame();
 	}
