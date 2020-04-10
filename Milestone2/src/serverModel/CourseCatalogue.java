@@ -9,17 +9,10 @@ public class CourseCatalogue {
 	
 	public CourseCatalogue () 
 	{
-		loadFromDataBase ();
-	}
-	
-	private void loadFromDataBase() 
-	{
-		// TODO Auto-generated method stub
-		DBManager db = new DBManager();
-		db.loadDatabaseSim();
-		setCourseList(db.getCourseList());
 		
 	}
+	
+	
 	public void createCourseOffering (Course c, int secNum, int secCap) 
 	{
 		if (c!= null) {

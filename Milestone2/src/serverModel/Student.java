@@ -52,17 +52,20 @@ public class Student {
 			System.err.println("Error: Cannot register, as student cannot be enrolled in 6 or more courses.");
 	}
 
-	public void printCourses()
+	public String printCourses()
 	{
-		System.out.println("The registered courses for:\n");
-		System.out.println(this);
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("The registered courses for:\n");
+		sb.append(this.toString());
 		int i = 0;
 		for(Registration r : studentRegList)
 		{
-			System.out.println("Course #"+(i+1) +". "+ r);
+			sb.append("Course #"+(i+1) +". "+ r.toString());
 			i++;
 		
 		}
+		return sb.toString();
 	}
 	
 }

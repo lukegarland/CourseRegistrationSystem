@@ -7,11 +7,11 @@ import java.util.ArrayList;
 //program
 public class DBManager {
 	
-	private volatile ArrayList <Course> courseList;
+	private volatile CourseCatalogue courseList;
 	private volatile ArrayList <Student> studentList;
 	
 	
-	public synchronized ArrayList<Course> getCourseList() {
+	public synchronized CourseCatalogue getCatalogue() {
 		return courseList;
 	}
 
@@ -25,6 +25,7 @@ public class DBManager {
 
 	public void loadDatabaseSim()
 	{
+		ArrayList<Course> courseList = new ArrayList<Course>();;		
 		courseList = new ArrayList<Course>();
 		courseList.add(new Course ("ENGG", 233));
 		courseList.get(0).addOffering(new CourseOffering(0, 150));
@@ -62,6 +63,7 @@ public class DBManager {
 		studentList.add(new Student ("Megan", 10));
 		studentList.add(new Student ("Michael", 42));
 		studentList.add(new Student ("Taylor", 17));
-		
+		this.courseList = new CourseCatalogue();
+		this.courseList.setCourseList(courseList);
 	}
 }
