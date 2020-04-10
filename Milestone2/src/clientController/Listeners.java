@@ -18,7 +18,7 @@ public class Listeners
 	
 	public Listeners(Client c, MainFrame m)
 	{
-		mainFrame = m;
+		this(m);
 		client = c;
 	}
 	

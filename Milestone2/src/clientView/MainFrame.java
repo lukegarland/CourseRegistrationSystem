@@ -25,7 +25,6 @@ import clientController.Listeners;
  */
 public class MainFrame extends JFrame {
 
-	private Listeners l;
 	/**
 	 * Default
 	 */
@@ -81,6 +80,8 @@ public class MainFrame extends JFrame {
 	public MainFrame() throws HeadlessException {
 		super("Main Window");
 		
+		LoginWindow temp = new LoginWindow(this, "Login Window");
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -101,6 +102,7 @@ public class MainFrame extends JFrame {
 		
 		topLabel = new JLabel("Main Window");
 		catalogueContent = new JTextArea(20, 40);
+		catalogueContent.setEditable(false);
 		scrollPane = new JScrollPane(catalogueContent);
 		showCatalogue = new JButton("Show Catalogue");
 		addRemove = new JButton("Add or Remove a Course");
@@ -122,9 +124,7 @@ public class MainFrame extends JFrame {
 		pack();
 		setVisible(true);
 		
-		l = new Listeners(this); // Create Listeners/GUI Controller
 		
-		LoginWindow temp = new LoginWindow(this, "Login Window");
 	}
 
 	/**

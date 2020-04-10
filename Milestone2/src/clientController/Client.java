@@ -22,6 +22,7 @@ public class Client implements Messages
 
 	
 	private MainFrame GUI;
+	private Listeners GUIController;
 	private Socket socket;
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
@@ -36,7 +37,7 @@ public class Client implements Messages
 			socketOut = new PrintWriter(socket.getOutputStream(), true);
 			
 			GUI = new MainFrame();
-			
+			GUIController = new Listeners(this, GUI); // Create Listeners/GUI Controller
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
