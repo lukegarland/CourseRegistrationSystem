@@ -8,7 +8,7 @@ public class Registration {
 	private char grade;
 	
 	
-	void completeRegistration (Student st, CourseOffering of) 
+	public void completeRegistration (Student st, CourseOffering of) 
 	{
 		theStudent = st;
 		theOffering = of;

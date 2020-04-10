@@ -8,14 +8,13 @@ import java.net.Socket;
 import java.util.Arrays;
 
 import common.Messages;
-import serverModel.DBManager;
+import serverModel.*;
 
 public class RegistrationApp implements Runnable, Messages
 {
 
 	DBManager db;
 	
-	private Socket s;
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
 	
@@ -23,7 +22,6 @@ public class RegistrationApp implements Runnable, Messages
 	{
 		
 		this.db = db;
-		this.s = s;
 		try {
 			socketIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			socketOut = new PrintWriter(s.getOutputStream(), true);
@@ -47,6 +45,7 @@ public class RegistrationApp implements Runnable, Messages
 				response = actOnMessage(input);
 				//Once \0 has been read, get input from user (console)
 				socketOut.print(response);
+				socketOut.print("\0");//End of message
 				socketOut.flush();
 			}
 			
@@ -93,28 +92,145 @@ public class RegistrationApp implements Runnable, Messages
 	}
 
 	private String viewStudentCourse(String[] content) {
-		// TODO Auto-generated method stub
-		return null;
+
+		StringBuilder sb = new StringBuilder();
+		
+		
+
+		Student st = searchStudent(content[0]);
+		if(st == null)
+		{
+			return studentNotFoundError();
+		}
+		
+		sb.append("\n==========View a student's courses==========\n");
+		sb.append(st.printCourses());
+		return sb.toString();
 	}
 
-	private String viewCatalogue(String[] content) {
-		// TODO Auto-generated method stub
+	private Student searchStudent(String query)
+	{
+		
+		if(query.matches("[0-9]+"))// One or more digits...Searching by id number.
+		{
+			int id = Integer.parseInt(query);
+			
+			
+			for(Student s : db.getStudentList())
+			{
+				if(id == s.getStudentId())
+					return s;
+			}
+		}
+		else //If not int (i.e, searching by name)
+		{
+			String name = query;
+			for(Student s : db.getStudentList())
+			{
+				if(name.equals(s.getStudentName()))
+					return s;
+			}
+			
+		}
+		
 		return null;
+	}
+	
+	
+	private String viewCatalogue(String[] content) {
+		
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("\n==========View course catalogue==========\n");
+
+		sb.append(db.getCatalogue().toString());
+		return sb.toString();
 	}
 
 	private String removeStudentFromCourse(String[] content) {
-		// TODO Auto-generated method stub
-		return null;
+
+		String id = content[0];
+		String courseName = content[1];
+
+		int courseNumber = Integer.parseInt(content[2]);
+
+		
+		Student st = searchStudent(id);
+	
+		if(st == null)
+		{
+			return studentNotFoundError();
+		}
+		
+		for(Registration r: st.getStudentRegList())
+		{
+			Course c = r.getTheOffering().getTheCourse();
+			if(c.getCourseName().equalsIgnoreCase(courseName) && c.getCourseNum() == courseNumber)
+			{
+				st.getStudentRegList().remove(r);
+				return "Removed student from course!";
+			}
+		}
+		
+		
+		return "Course not found";
 	}
 
-	private String addStudentToCourse(String[] content) {
-		// TODO Auto-generated method stub
-		return null;
+	private String addStudentToCourse(String[] content)
+	{
+		String id = content[0];
+		String courseName = content[1];
+		int courseNumber = Integer.parseInt(content[2]);
+		int sectionNumber = Integer.parseInt(content[3]);
+		
+		Student st = searchStudent(id);
+		
+		if(st == null)
+		{
+	
+			return studentNotFoundError();
+		}
+		
+		
+		Course c = db.getCatalogue().searchCat(courseName, courseNumber);
+				
+		if (c == null)
+		{
+			return courseNotFoundError();
+		}
+		
+		Registration r = new Registration();
+		r.completeRegistration(st, c.getCourseOfferingAt(sectionNumber));
+		
+		return "Student registered in course";
 	}
 
 	private String searchCourseCatalogue(String[] content) {
-		// TODO Auto-generated method stub
-		return null;
+
+		String courseName = content[0];
+		int courseNumber = Integer.parseInt(content[1]);
+		
+		return db.getCatalogue().searchCat(courseName, courseNumber).toString();
+	}
+	
+	private String invalidInputError()
+	{
+		return("Error: Invalid input");
+	}
+	
+	private String studentNotFoundError()
+	{
+		return("Error: Student not found");
+	}
+	
+	private String courseNotFoundError()
+	{
+		return("Course not found");
+	}
+	
+	private String studentNotEnrolledError() 
+	{
+		return ("Error: Student not enrolled in any courses.");		
 	}
 
 }
