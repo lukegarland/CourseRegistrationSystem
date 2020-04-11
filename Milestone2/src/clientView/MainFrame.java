@@ -1,12 +1,7 @@
-/**
- * 
- */
 package clientView;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 
 import javax.swing.JButton;
@@ -18,10 +13,16 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import clientController.Listeners;
-
 /**
- * @author lukeg
+ * Main window of the GUI.
+ * 
+ * Initializes and controls the JFrame of the GUI.
+ * Also contains methods to display messages to the screen,
+ * update the GUI, and get the button content.
+ * 
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * @version 1.1
+ * @since April 11, 2020
  *
  */
 public class MainFrame extends JFrame {
@@ -39,28 +40,28 @@ public class MainFrame extends JFrame {
 	 */
 	private JLabel topLabel;
 	/**
-	 * Insert button
+	 * Display catalogue button
 	 */
 	private JButton showCatalogue;
 
 	/**
-	 * Find button
+	 * Add or remove button
 	 */
 	private JButton addRemove;
 	/**
-	 * Browse button
+	 * View registrations button
 	 */
 	private JButton viewStudentRegs;
 	/**
-	 * Button used to create a new BST
+	 * Button used to search through the catalogs
 	 */
 	private JButton searchCatalogue;
 	/**
-	 * Panel contains the top buttons
+	 * Panel contains the first two buttons
 	 */
 	private JPanel topButtonPanel;
 	/**
-	 * Panel containing the bottom buttons
+	 * Panel containing the last two buttons
 	 */
 	private JPanel bottomButtonPanel;
 	/**
@@ -80,8 +81,8 @@ public class MainFrame extends JFrame {
 	 * @throws HeadlessException
 	 */
 	public MainFrame() throws HeadlessException {
-		
-		LoginWindow temp = new LoginWindow(this, "Login Window");
+		//Future work
+		//LoginWindow temp = new LoginWindow(this, "Login Window");
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -92,15 +93,13 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		FlowLayout fl = new FlowLayout();
-		
+		//Initializing the Panels
 		topButtonPanel = new JPanel();
 		bottomButtonPanel = new JPanel();
-		
 		topPanel = new JPanel();
-		
 		centerPanel = new JPanel();
 		
+		//Initializing the individual components
 		topLabel = new JLabel("Main Window");
 		catalogueContent = new JTextArea(20,50);
 		catalogueContent.setEditable(false);
@@ -111,6 +110,7 @@ public class MainFrame extends JFrame {
 		viewStudentRegs = new JButton("View Student Registrations");
 		searchCatalogue = new JButton("Search Through Catalogue");
 		
+		//Adding the components to their final panels
 		topPanel.add(topLabel);
 		topButtonPanel.add(showCatalogue);
 		topButtonPanel.add(addRemove);
@@ -118,43 +118,27 @@ public class MainFrame extends JFrame {
 		bottomButtonPanel.add(searchCatalogue);
 		centerPanel.add(scrollPane);
 		topButtonPanel.add(bottomButtonPanel);
+		
+		//Adding the panels to the JFrame in the desired location
 		add(topPanel, BorderLayout.NORTH);
 		add(topButtonPanel, BorderLayout.SOUTH);
-		//add(bottomButtonPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
 		
+		//Sets the size and visibility
 		pack();
 		setVisible(true);
 		
 		
 	}
-
 	/**
-	 * @param gc
+	 * Sets the text to the String given by content
+	 * @param content String to be displayed
 	 */
-	public MainFrame(GraphicsConfiguration gc) {
-		super(gc);
-		// TODO Auto-generated constructor stub
+	public void fillCatalogueContent(String content)
+	{
+		catalogueContent.setText(content);
 	}
-
-	/**
-	 * @param title
-	 * @throws HeadlessException
-	 */
-	public MainFrame(String title) throws HeadlessException {
-		super(title);
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param title
-	 * @param gc
-	 */
-	public MainFrame(String title, GraphicsConfiguration gc) {
-		super(title, gc);
-		// TODO Auto-generated constructor stub
-	}
-	
+	/***GETTERS AND SETTERS***/
 	public JButton getAddRemove() {
 		return addRemove;
 	}
@@ -169,9 +153,6 @@ public class MainFrame extends JFrame {
 	public JButton getShowCatalogue() {
 		return showCatalogue;
 	}
-	public void fillCatalogueContent(String content)
-	{
-		catalogueContent.setText(content);
-	}
+	
 
 }
