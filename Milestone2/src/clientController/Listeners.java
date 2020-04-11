@@ -16,17 +16,31 @@ import common.*;
 public class Listeners 
 {
 
+	/**
+	 * The primary Jrame which contains all buttons to access sub menus.
+	 */
 	private MainFrame mainFrame;
+	/**
+	 * The client which can send messages to and from the server.
+	 */
 	private Client client;
 	
+	/**
+	 * Constructs a listener which keeps track of all user interaction with the GUI.
+	 * @param c The client from which messages may be sent and received from server.
+	 * @param m the main JFrame from which GUI system is rooted.
+	 */
 	public Listeners(Client c, MainFrame m)
 	{
 		this(m);
 		client = c;
 	}
 	
-	//Constructor for testing (no client needed)
-	public Listeners(MainFrame m)
+	/**
+	 * Constructs a listener which keeps track of all user interaction with the GUI.
+	 * @param m the main JFrame from which GUI system is rooted.
+	 */
+	private Listeners(MainFrame m)
 	{
 		mainFrame = m;
 		
