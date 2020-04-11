@@ -10,7 +10,7 @@ import common.*;
  * Responsible for creating and managing all listeners for all GUI interactions.
  * @author Guillaume Raymond-Fauteux
  * @since April 10 2020
- * @version 0.0
+ * @version 0.1
  *
  */
 public class Listeners 
@@ -66,23 +66,26 @@ public class Listeners
 			addRemoveDialog.writeToStudentContent(response);
 			
 			
+			//If no listeners are already attached to sub-dialog buttons, add them.
+			if( addRemoveDialog.getAddButton().getActionListeners().length == 0) {
 			
-			
-			addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
-				String[] results = addRemoveDialog.getCourseInfo(); 
-				String r1 = client.communicate(MessageTypes.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
-				JOptionPane.showMessageDialog(addRemoveDialog, r1);
+				addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
+					String[] results = addRemoveDialog.getCourseInfo(); 
+					String r1 = client.communicate(MessageTypes.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
+					JOptionPane.showMessageDialog(addRemoveDialog, r1);
+					
+				});
 				
-			});
+				
+				
+				
+				addRemoveDialog.getRemoveButton().addActionListener((ActionEvent eee) -> {
+					String[] results = addRemoveDialog.getCourseInfo();
+					String r1 = client.communicate(MessageTypes.removeCourse, studentName + " " + results[0] + " " + results[1]);
+					JOptionPane.showMessageDialog(addRemoveDialog, r1);
+				});
+			}
 			
-			
-			
-			
-			addRemoveDialog.getRemoveButton().addActionListener((ActionEvent eee) -> {
-				String[] results = addRemoveDialog.getCourseInfo();
-				String r1 = client.communicate(MessageTypes.removeCourse, studentName + " " + results[0] + " " + results[1]);
-				JOptionPane.showMessageDialog(addRemoveDialog, r1);
-			});
 		});
 		
 		addRemoveDialog.setVisible(true);
