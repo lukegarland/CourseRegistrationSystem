@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import clientView.*;
-import common.Messages;
+import common.*;
 /**
  * Responsible for creating and managing all listeners for all GUI interactions.
  * @author Guillaume Raymond-Fauteux
@@ -31,7 +31,7 @@ public class Listeners
 		mainFrame = m;
 		
 		mainFrame.getShowCatalogue().addActionListener((ActionEvent e) -> {
-			String response = client.communicate(Messages.getCatalogue, "");
+			String response = client.communicate(MessageTypes.getCatalogue, "");
 			mainFrame.fillCatalogueContent(response);
 		});
 		
@@ -61,7 +61,7 @@ public class Listeners
 			
 			addRemoveDialog.submitPressed();
 			
-			String response = client.communicate(Messages.searchStudentCourses, studentName);
+			String response = client.communicate(MessageTypes.searchStudentCourses, studentName);
 			
 			addRemoveDialog.writeToStudentContent(response);
 			
@@ -69,8 +69,8 @@ public class Listeners
 			
 			
 			addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
-				String[] results = addRemoveDialog.getCourseInfo(); //TODO : This needs to return course section! change
-				String r1 = client.communicate(Messages.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
+				String[] results = addRemoveDialog.getCourseInfo(); 
+				String r1 = client.communicate(MessageTypes.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
 				JOptionPane.showMessageDialog(addRemoveDialog, r1);
 				
 			});
@@ -80,7 +80,7 @@ public class Listeners
 			
 			addRemoveDialog.getRemoveButton().addActionListener((ActionEvent eee) -> {
 				String[] results = addRemoveDialog.getCourseInfo();
-				String r1 = client.communicate(Messages.removeCourse, studentName + " " + results[0] + " " + results[1]);
+				String r1 = client.communicate(MessageTypes.removeCourse, studentName + " " + results[0] + " " + results[1]);
 				JOptionPane.showMessageDialog(addRemoveDialog, r1);
 			});
 		});
@@ -100,7 +100,7 @@ public class Listeners
 			searchCatalogueDialog.submitPressed();
 			
 			String[] results = searchCatalogueDialog.getCourseInfo();
-			String r1 = client.communicate(Messages.searchCatalogue, results[0] + " " + results[1]);
+			String r1 = client.communicate(MessageTypes.searchCatalogue, results[0] + " " + results[1]);
 			searchCatalogueDialog.writeToCourseContent(r1);
 		});
 		
@@ -118,7 +118,7 @@ public class Listeners
 			searchStudentDialog.submitPressed();
 			String results = searchStudentDialog.getStudentName();
 			
-			String r1 = client.communicate(Messages.searchStudentCourses, results);
+			String r1 = client.communicate(MessageTypes.searchStudentCourses, results);
 			searchStudentDialog.writeToStudentContent(r1);
 		});
 		

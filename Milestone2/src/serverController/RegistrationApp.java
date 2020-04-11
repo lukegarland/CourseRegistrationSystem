@@ -3,28 +3,35 @@ package serverController;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputFilter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
 
-import common.Messages;
+import common.*;
 import serverModel.*;
 
-public class RegistrationApp implements Runnable, Messages
+public class RegistrationApp implements Runnable, MessageTypes
 {
 
 	DBManager db;
-	
-	private BufferedReader socketIn;
-	private PrintWriter socketOut;
-	
+
+	private ObjectInputStream messageInputStream;
+	private ObjectOutputStream messageOutputStream;
+
 	public RegistrationApp(Socket s, DBManager db)
 	{
 		
 		this.db = db;
 		try {
-			socketIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			socketOut = new PrintWriter(s.getOutputStream(), true);
+
+			messageInputStream = new ObjectInputStream((s.getInputStream()));
+			messageOutputStream = new ObjectOutputStream(s.getOutputStream());
+			
+			
+			
 		} catch (IOException e) {
 			System.err.println(e.getStackTrace());
 		}
@@ -33,28 +40,28 @@ public class RegistrationApp implements Runnable, Messages
 	@Override
 	public void run() 
 	{
-		String input = "";
-		String response = "";
 		
-		try 
-		{
+			
+		
+		try {
 			while(true)
 			{
-				input = socketIn.readLine();//Get input from socket
+				Message input;
 
-				if(input.contains(String.valueOf('\0')))
-					input = input.replace("\0", "");
-					
-				response = actOnMessage(input);
-				socketOut.print(response);
-				socketOut.println("\0");//End of message
-				socketOut.flush();
-			}
-			
-		}catch(IOException e)
+				input = (Message) messageInputStream.readObject();
+
+				String response = actOnMessage(input.getType() + " " + input.getContent());
+
+				messageOutputStream.reset();
+				messageOutputStream.writeObject(new Message(MessageTypes.validResponse, response)); //TODO: check for error response?
+			} 
+		}
+		catch (ClassNotFoundException | IOException e) 
 		{
 			e.printStackTrace();
 		}
+
+
 	}
 
 	private String actOnMessage(String input) {
@@ -70,19 +77,19 @@ public class RegistrationApp implements Runnable, Messages
 		switch(type)
 		{
 		
-			case Messages.searchCatalogue:
+			case MessageTypes.searchCatalogue:
 				rv = searchCourseCatalogue(content);
 				break;
-			case Messages.addCourse:
+			case MessageTypes.addCourse:
 				rv = addStudentToCourse(content);
 				break;
-			case Messages.removeCourse:
+			case MessageTypes.removeCourse:
 				rv = removeStudentFromCourse(content);
 				break;
-			case Messages.getCatalogue:
+			case MessageTypes.getCatalogue:
 				rv = viewCatalogue(content);
 				break;
-			case Messages.searchStudentCourses:
+			case MessageTypes.searchStudentCourses:
 				rv = viewStudentCourse(content);
 				break;
 

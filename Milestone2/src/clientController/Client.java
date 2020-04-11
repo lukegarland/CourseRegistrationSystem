@@ -7,34 +7,37 @@ import common.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import com.sun.java.accessibility.util.GUIInitializedListener;
 
 /**
  * @author lukeg
  *
  */
-public class Client implements Messages
+public class Client implements MessageTypes
 {
 
 	
 	private MainFrame GUI;
 	private Listeners GUIController;
 	private Socket socket;
-	private BufferedReader socketIn;
-	private PrintWriter socketOut;
+;
 	
-	
+	private ObjectInputStream messageInputStream;
+	private ObjectOutputStream messageOutputStream;
+
 	
 	public Client(String serverName, int portNumber) {
 
 		try {
 			socket = new Socket(serverName, portNumber);
-			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			socketOut = new PrintWriter(socket.getOutputStream(), true);
+
+			messageOutputStream = new ObjectOutputStream(socket.getOutputStream());
+			messageInputStream = new ObjectInputStream((socket.getInputStream()));
+			
 			
 			GUI = new MainFrame();
 			GUIController = new Listeners(this, GUI); // Create Listeners/GUI Controller
@@ -55,42 +58,28 @@ public class Client implements Messages
 	
 	public String communicate(String messageType, String content)
 	{
-		StringBuilder sb = new StringBuilder();
-		sb.append(messageType.trim());
-		sb.append(" "); // Mark 
-		sb.append(content);
-		sb.append("\0"); //Mark end of content
 		
-		socketOut.println(sb.toString());
-		socketOut.flush();
+		Message toSend = new Message(messageType, content);
 		
-		sb = new StringBuilder();
-		
-		String line = "";
-		while(true)
-		{		
-			try 
-			{
-				line = socketIn.readLine();
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-
+		try {
+			messageOutputStream.reset(); // clear stream cache
 			
-			if(line.contains(String.valueOf("\0")))
-			{
-				line.replace("\0", " ");
-				sb.append(line);
-				break;
-			}else
-			{
-				sb.append(line);
-				sb.append("\n");
-			}
+			
+			messageOutputStream.writeObject(toSend);
+			
+			Message response = (Message) messageInputStream.readObject();
+			if(response.getType().equals(MessageTypes.validResponse))
+				return response.getContent();	//Successful message back
+	 
+				
+			
+		} catch (ClassNotFoundException | IOException e) 
+		{
+			e.printStackTrace();
 		}
-		return sb.toString();
+		
+		return "Error Response"; // TODO: Check for error responses. (Possibly just show JOptionPane)
+		
 	}
 	
 

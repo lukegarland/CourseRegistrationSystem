@@ -1,6 +1,6 @@
 package common;
 
-public interface Messages 
+public interface MessageTypes 
 {
 
 	public static final String getCatalogue = "GET_CAT";
@@ -9,4 +9,10 @@ public interface Messages
 	public static final String addCourse = "ADD_COURSE";
 	public static final String removeCourse = "REM_COURSE";
 
+	public static final String validResponse = "RESPONSE";
+	public static final String errorResponse = "ERROR";
+	
+	
+	
+	
 }
