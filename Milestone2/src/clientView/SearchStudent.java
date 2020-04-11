@@ -70,6 +70,11 @@ public class SearchStudent extends JDialog{
 		north.add(submitButton);
 		add(north, BorderLayout.NORTH);
 		
+		setModalityType(ModalityType.APPLICATION_MODAL);
+		pack();
+	}
+	
+	public void submitPressed() {
 		//Center Panel
 		center = new JPanel();
 		studentContent = new JTextArea(20,30);
@@ -78,9 +83,7 @@ public class SearchStudent extends JDialog{
 		center.add(studentContentScroll);
 		add(center, BorderLayout.CENTER);
 		
-		
 		pack();
-		setVisible(true);
 	}
 	
 	/**

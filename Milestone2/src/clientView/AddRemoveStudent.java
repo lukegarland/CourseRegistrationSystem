@@ -47,6 +47,15 @@ public class AddRemoveStudent extends JDialog {
 	private JLabel courseNumberLabel;
 	
 	/**
+	 * Text field where user enters the courser offering number.
+	 */
+	private JTextField courseOffering;
+	/**
+	 * Label for the courseOffering text field.
+	 */
+	private JLabel courseOfferingLabel;
+	
+	/**
 	 * Text area where student's registered courses will appear.
 	 */
 	private JTextArea studentContent;
@@ -110,9 +119,9 @@ public class AddRemoveStudent extends JDialog {
 		north.add(studentName);
 		north.add(submitButton);
 		add(north, BorderLayout.NORTH);
-		pack();
-		setVisible(true);
 		
+		setModalityType(ModalityType.APPLICATION_MODAL);
+		pack();
 	}
 	
 	/**
@@ -129,12 +138,16 @@ public class AddRemoveStudent extends JDialog {
 		
 		//East Panel
 		east = new JPanel();
-		east.setLayout( new GridLayout(10,2) );
+		east.setLayout( new GridLayout(10,3) );
 		courseName = new JTextField(4);
 		courseNameLabel = new JLabel("Course name:");
 		
-		courseNumber = new JTextField(3);
+		courseNumber = new JTextField(4);
 		courseNumberLabel = new JLabel("Course number:");
+		
+		courseOffering = new JTextField(4);
+		courseOfferingLabel = new JLabel("Course Offering:");
+		
 		
 		addButton = new JButton("Add course");
 		removeButton = new JButton("Remove course");
@@ -145,12 +158,14 @@ public class AddRemoveStudent extends JDialog {
 		east.add(courseNumberLabel);
 		east.add(courseNumber);
 		
+		east.add(courseOfferingLabel);
+		east.add(courseOffering);
+		
 		east.add(addButton);
 		east.add(removeButton);
 		add(east, BorderLayout.EAST);
 		
 		pack();
-		setVisible(true);
 	}
 	
 	/**

@@ -94,7 +94,6 @@ public class SearchCatalogue extends JDialog{
 		north.add(courseNumber);
 		add(north, BorderLayout.NORTH);
 		
-		
 		//Center panel
 		center = new JPanel();
 		
@@ -103,6 +102,14 @@ public class SearchCatalogue extends JDialog{
 		center.add(submitButton);
 		add(center, BorderLayout.CENTER);
 		
+		setModalityType(ModalityType.APPLICATION_MODAL);
+		pack();
+	}
+	
+	/**
+	 * Populates the remaining of the dialog pane when a course name and number has been input.
+	 */
+	public void submitPressed() {
 		//South Panel
 		south = new JPanel();
 		
@@ -113,7 +120,6 @@ public class SearchCatalogue extends JDialog{
 		add(south, BorderLayout.SOUTH);
 		
 		pack();
-		setVisible(true);
 	}
 	
 	/**
