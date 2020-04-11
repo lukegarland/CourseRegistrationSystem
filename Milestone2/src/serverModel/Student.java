@@ -54,6 +54,9 @@ public class Student {
 
 	public String printCourses()
 	{
+		if(this.studentRegList.isEmpty())
+			return "No courses enrolled for:\n" + this.toString();
+		
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("The registered courses for:\n");

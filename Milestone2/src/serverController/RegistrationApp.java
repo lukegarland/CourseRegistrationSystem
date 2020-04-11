@@ -42,6 +42,9 @@ public class RegistrationApp implements Runnable, Messages
 			{
 				input = socketIn.readLine();//Get input from socket
 
+				if(input.contains(String.valueOf('\0')))
+					input = input.replace("\0", "");
+					
 				response = actOnMessage(input);
 				socketOut.print(response);
 				socketOut.println("\0");//End of message
@@ -58,7 +61,7 @@ public class RegistrationApp implements Runnable, Messages
 		// TODO
 		
 		String [] inputTokens = input.split("\\s+");
-		String type = inputTokens[0].trim();
+		String type = inputTokens[0];
 		String[] content = Arrays.copyOfRange(inputTokens, 1, inputTokens.length);
 		
 		
@@ -92,19 +95,14 @@ public class RegistrationApp implements Runnable, Messages
 
 	private String viewStudentCourse(String[] content) {
 
-		StringBuilder sb = new StringBuilder();
-		
-		
-
 		Student st = searchStudent(content[0].trim());
 		if(st == null)
 		{
 			return studentNotFoundError();
 		}
 		
-		sb.append("\n==========View a student's courses==========\n");
-		sb.append(st.printCourses());
-		return sb.toString();
+		
+		return st.printCourses();
 	}
 
 	private Student searchStudent(String query)
@@ -136,13 +134,10 @@ public class RegistrationApp implements Runnable, Messages
 	}
 	
 	
-	private String viewCatalogue(String[] content) {
-		
-		StringBuilder sb = new StringBuilder();
+	private String viewCatalogue(String[] content) 
+	{
 
-
-		sb.append(db.getCatalogue().toString());
-		return sb.toString();
+		return db.getCatalogue().toString();
 	}
 
 	private String removeStudentFromCourse(String[] content) {
@@ -211,10 +206,6 @@ public class RegistrationApp implements Runnable, Messages
 		return db.getCatalogue().searchCat(courseName, courseNumber).toString();
 	}
 	
-	private String invalidInputError()
-	{
-		return("Error: Invalid input");
-	}
 	
 	private String studentNotFoundError()
 	{

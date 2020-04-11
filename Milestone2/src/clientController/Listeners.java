@@ -70,7 +70,7 @@ public class Listeners
 			
 			addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
 				String[] results = addRemoveDialog.getCourseInfo(); //TODO : This needs to return course section! change
-				String r1 = client.communicate(Messages.removeCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
+				String r1 = client.communicate(Messages.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
 				JOptionPane.showMessageDialog(addRemoveDialog, r1);
 				
 			});
@@ -100,9 +100,8 @@ public class Listeners
 			searchCatalogueDialog.submitPressed();
 			
 			String[] results = searchCatalogueDialog.getCourseInfo();
-			for(String st : results) {
-				System.out.println(st);
-			}
+			String r1 = client.communicate(Messages.searchCatalogue, results[0] + " " + results[1]);
+			searchCatalogueDialog.writeToCourseContent(r1);
 		});
 		
 		searchCatalogueDialog.setVisible(true);
@@ -117,8 +116,10 @@ public class Listeners
 		searchStudentDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
 			
 			searchStudentDialog.submitPressed();
-			String studentName = searchStudentDialog.getStudentName();
-			System.out.println(studentName);
+			String results = searchStudentDialog.getStudentName();
+			
+			String r1 = client.communicate(Messages.searchStudentCourses, results);
+			searchStudentDialog.writeToStudentContent(r1);
 		});
 		
 		searchStudentDialog.setVisible(true);
