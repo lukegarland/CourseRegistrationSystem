@@ -2,7 +2,10 @@ package clientController;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 import clientView.*;
+import common.Messages;
 /**
  * Responsible for creating and managing all listeners for all GUI interactions.
  * @author Guillaume Raymond-Fauteux
@@ -27,6 +30,12 @@ public class Listeners
 	{
 		mainFrame = m;
 		
+		mainFrame.getShowCatalogue().addActionListener((ActionEvent e) -> {
+			String response = client.communicate(Messages.getCatalogue, "");
+			mainFrame.fillCatalogueContent(response);
+		});
+		
+		
 		mainFrame.getAddRemove().addActionListener((ActionEvent e) -> {
 			addRemoveDialog();
 		});
@@ -45,25 +54,38 @@ public class Listeners
 	 */
 	private void addRemoveDialog() {
 		AddRemoveStudent addRemoveDialog = new AddRemoveStudent(mainFrame);
+		
+		
 		addRemoveDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
 			String studentName = addRemoveDialog.getStudentName();
-			System.out.println(studentName);
+			
 			addRemoveDialog.submitPressed();
 			
+			String response = client.communicate(Messages.searchStudentCourses, studentName);
+			
+			addRemoveDialog.writeToStudentContent(response);
+			
+			
+			
+			
 			addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
-				String[] results = addRemoveDialog.getCourseInfo();
-				for(String st : results) {
-					System.out.println(st);
-				}
+				String[] results = addRemoveDialog.getCourseInfo(); //TODO : This needs to return course section!
+				String r1 = client.communicate(Messages.removeCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
+				JOptionPane.showMessageDialog(addRemoveDialog, r1);
+				
 			});
+			
+			
+			
 			
 			addRemoveDialog.getRemoveButton().addActionListener((ActionEvent eee) -> {
 				String[] results = addRemoveDialog.getCourseInfo();
-				for(String st : results) {
-					System.out.println(st);
-				}
+				String r1 = client.communicate(Messages.removeCourse, studentName + " " + results[0] + " " + results[1]);
+				JOptionPane.showMessageDialog(addRemoveDialog, r1);
 			});
 		});
+
+		
 	}
 	
 	/**
@@ -92,11 +114,6 @@ public class Listeners
 		});
 	}
 
-	//Main for testing
-	public static void main(String args[]) {
-		MainFrame mainFrame = new MainFrame();
-		
-		Listeners listener = new Listeners(mainFrame);
-	}
+
 	
 }

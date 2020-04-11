@@ -50,7 +50,7 @@ public class Client implements Messages
 	 */
 	public static void main(String[] args) {
 		
-		Client client = new Client("localhost", 8099);
+		Client client = new Client("localhost", 8099);		
 	}
 	
 	public String communicate(String messageType, String content)
@@ -62,6 +62,7 @@ public class Client implements Messages
 		sb.append("\0"); //Mark end of content
 		
 		socketOut.println(sb.toString());
+		socketOut.flush();
 		
 		sb = new StringBuilder();
 		

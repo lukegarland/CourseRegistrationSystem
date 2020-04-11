@@ -43,9 +43,8 @@ public class RegistrationApp implements Runnable, Messages
 				input = socketIn.readLine();//Get input from socket
 
 				response = actOnMessage(input);
-				//Once \0 has been read, get input from user (console)
 				socketOut.print(response);
-				socketOut.print("\0");//End of message
+				socketOut.println("\0");//End of message
 				socketOut.flush();
 			}
 			
@@ -59,7 +58,7 @@ public class RegistrationApp implements Runnable, Messages
 		// TODO
 		
 		String [] inputTokens = input.split("//s+");
-		String type = inputTokens[0];
+		String type = inputTokens[0].trim();
 		String[] content = Arrays.copyOfRange(inputTokens, 1, inputTokens.length);
 		
 		

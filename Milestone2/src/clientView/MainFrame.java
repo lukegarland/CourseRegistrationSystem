@@ -5,6 +5,7 @@ package clientView;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 
@@ -41,6 +42,7 @@ public class MainFrame extends JFrame {
 	 * Insert button
 	 */
 	private JButton showCatalogue;
+
 	/**
 	 * Find button
 	 */
@@ -78,7 +80,6 @@ public class MainFrame extends JFrame {
 	 * @throws HeadlessException
 	 */
 	public MainFrame() throws HeadlessException {
-		super("Main Window");
 		
 		LoginWindow temp = new LoginWindow(this, "Login Window");
 
@@ -101,8 +102,9 @@ public class MainFrame extends JFrame {
 		centerPanel = new JPanel();
 		
 		topLabel = new JLabel("Main Window");
-		catalogueContent = new JTextArea(20, 40);
+		catalogueContent = new JTextArea(20,50);
 		catalogueContent.setEditable(false);
+		catalogueContent.setFont(new Font("Comic Sans MS", Font.PLAIN,10));
 		scrollPane = new JScrollPane(catalogueContent);
 		showCatalogue = new JButton("Show Catalogue");
 		addRemove = new JButton("Add or Remove a Course");
@@ -164,8 +166,12 @@ public class MainFrame extends JFrame {
 	public JButton getViewStudentRegs() {
 		return viewStudentRegs;
 	}
-	
-	public static void main(String[] args) {
-		MainFrame test = new MainFrame();
+	public JButton getShowCatalogue() {
+		return showCatalogue;
 	}
+	public void fillCatalogueContent(String content)
+	{
+		catalogueContent.setText(content);
+	}
+
 }
