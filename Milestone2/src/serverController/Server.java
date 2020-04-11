@@ -28,7 +28,7 @@ public class Server {
 	public Server(int port)
 	{
 		db = new DBManager();
-		db.loadDatabaseSim();
+		db.loadFromTextFile("StudentData.txt", "CourseData.txt");
 			try
 			{
 				serverSocket = new ServerSocket(port);
