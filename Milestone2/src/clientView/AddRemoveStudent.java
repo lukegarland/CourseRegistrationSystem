@@ -173,9 +173,10 @@ public class AddRemoveStudent extends JDialog {
 	 * @return Array containing the name and number of course in first first and second elements respectively.
 	 */
 	public String[] getCourseInfo() {
-		String[] results = new String[2];
+		String[] results = new String[3];
 		results[0] = courseName.getText();
 		results[1] = courseNumber.getText();
+		results[2] = courseOffering.getText();
 		return results;
 	}
 	

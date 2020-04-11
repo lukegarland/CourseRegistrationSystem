@@ -57,7 +57,7 @@ public class RegistrationApp implements Runnable, Messages
 	private String actOnMessage(String input) {
 		// TODO
 		
-		String [] inputTokens = input.split("//s+");
+		String [] inputTokens = input.split("\\s+");
 		String type = inputTokens[0].trim();
 		String[] content = Arrays.copyOfRange(inputTokens, 1, inputTokens.length);
 		
@@ -84,7 +84,7 @@ public class RegistrationApp implements Runnable, Messages
 				break;
 
 			default: 
-				rv = "Error";
+				rv = "Errorz";
 		}
 
 		return rv;
@@ -96,7 +96,7 @@ public class RegistrationApp implements Runnable, Messages
 		
 		
 
-		Student st = searchStudent(content[0]);
+		Student st = searchStudent(content[0].trim());
 		if(st == null)
 		{
 			return studentNotFoundError();
@@ -110,7 +110,7 @@ public class RegistrationApp implements Runnable, Messages
 	private Student searchStudent(String query)
 	{
 		
-		if(query.matches("[0-9]+"))// One or more digits...Searching by id number.
+		if(query.matches("\\d+"))// One or more digits...Searching by id number.
 		{
 			int id = Integer.parseInt(query);
 			
@@ -140,7 +140,6 @@ public class RegistrationApp implements Runnable, Messages
 		
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("\n==========View course catalogue==========\n");
 
 		sb.append(db.getCatalogue().toString());
 		return sb.toString();
