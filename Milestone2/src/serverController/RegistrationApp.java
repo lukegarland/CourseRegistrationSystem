@@ -168,6 +168,7 @@ public class RegistrationApp implements Runnable, MessageTypes
 			if(c.getCourseName().equalsIgnoreCase(courseName) && c.getCourseNum() == courseNumber)
 			{
 				st.getStudentRegList().remove(r);
+				r.getTheOffering().getOfferingRegList().remove(r);
 				return "Removed student from course!";
 			}
 		}

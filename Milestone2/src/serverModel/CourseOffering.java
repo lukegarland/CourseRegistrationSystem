@@ -11,6 +11,9 @@ public class CourseOffering {
 	private Course theCourse;
 	//private ArrayList<Student> studentList;
 	private ArrayList <Registration> offeringRegList;
+
+
+
 	private boolean validCourse; // True if 8 or more students are registered 
 	
 	
@@ -46,7 +49,7 @@ public class CourseOffering {
 	{
 		String st = "\n";
 		st += getTheCourse().getCourseName() + " " + getTheCourse().getCourseNum() + "\n";
-		st += "Section Num: " + getSecNum() + ", section cap: "+ getSecCap() + ", enough students: "+ validCourse+ "\n";
+		st += "Section Num: " + getSecNum() + ", section cap: "+ getSecCap() + ", seats left: " + (getSecCap() - offeringRegList.size()) + "\nenough students: "+ validCourse+ "\n";
 		//We also want to print the names of all students in the section
 		return st;
 	}
@@ -62,4 +65,8 @@ public class CourseOffering {
 		else
 			System.err.println("Student cannot be registered; class is full");
 	}
+	public ArrayList<Registration> getOfferingRegList() {
+		return offeringRegList;
+	}
+	
 }
