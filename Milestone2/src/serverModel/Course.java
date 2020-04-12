@@ -47,6 +47,11 @@ public class Course {
 	public void setCourseNum(int courseNum) {
 		this.courseNum = courseNum;
 	}
+	
+	public int getNumberOfOfferings()
+	{
+		return offeringList.size();
+	}
 	@Override
 	public String toString () 
 	{

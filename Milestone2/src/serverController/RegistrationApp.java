@@ -49,11 +49,22 @@ public class RegistrationApp implements Runnable, MessageTypes
 				Message input;
 
 				input = (Message) messageInputStream.readObject();
-
-				String response = actOnMessage(input.getType() + " " + input.getContent());
+				
+				String responseType, response;
+				try 
+				{
+					response = actOnMessage(input.getType() + " " + input.getContent());
+					responseType = MessageTypes.validResponse;
+					
+				}
+				catch (RegistrationSystemException e) // Something went wrong.
+				{
+					response = e.getMessage();
+					responseType = MessageTypes.errorResponse;
+				}
 
 				messageOutputStream.reset();
-				messageOutputStream.writeObject(new Message(MessageTypes.validResponse, response)); //TODO: check for error response?
+				messageOutputStream.writeObject(new Message(responseType, response)); //TODO: check for error response?
 			} 
 		}
 		catch (ClassNotFoundException | IOException e) 
@@ -64,7 +75,7 @@ public class RegistrationApp implements Runnable, MessageTypes
 
 	}
 
-	private String actOnMessage(String input) {
+	private String actOnMessage(String input) throws RegistrationSystemException {
 		// TODO
 		
 		String [] inputTokens = input.split("\\s+");
@@ -73,39 +84,49 @@ public class RegistrationApp implements Runnable, MessageTypes
 		
 		
 		String rv;
-		
-		switch(type)
+		try
 		{
-		
-			case MessageTypes.searchCatalogue:
-				rv = searchCourseCatalogue(content);
-				break;
-			case MessageTypes.addCourse:
-				rv = addStudentToCourse(content);
-				break;
-			case MessageTypes.removeCourse:
-				rv = removeStudentFromCourse(content);
-				break;
-			case MessageTypes.getCatalogue:
-				rv = viewCatalogue(content);
-				break;
-			case MessageTypes.searchStudentCourses:
-				rv = viewStudentCourse(content);
-				break;
+			switch(type)
+			{
+			
+				case MessageTypes.searchCatalogue:
+					rv = searchCourseCatalogue(content);
+					break;
+				case MessageTypes.addCourse:
+					rv = addStudentToCourse(content);
+					break;
+				case MessageTypes.removeCourse:
+					rv = removeStudentFromCourse(content);
+					break;
+				case MessageTypes.getCatalogue:
+					rv = viewCatalogue();
+					break;
+				case MessageTypes.searchStudentCourses:
+					rv = viewStudentCourse(content);
+					break;
 
-			default: 
-				rv = "Errorz";
+				default: 
+					throw new RegistrationSystemException("Message Communication Error");
+			}
 		}
-
+		catch(NumberFormatException e)
+		{
+			throw new RegistrationSystemException(invalidInputError());
+		}
+		
 		return rv;
 	}
 
-	private String viewStudentCourse(String[] content) {
+	private String viewStudentCourse(String[] content) throws RegistrationSystemException {
 
-		Student st = searchStudent(content[0].trim());
+		if(content.length == 0)
+			throw new RegistrationSystemException(invalidInputError());
+		
+		Student st = searchStudent(String.join(" ", content)); //Rejoin content in case query is name (e.g. Michael Smith)
+		
 		if(st == null)
 		{
-			return studentNotFoundError();
+			throw new RegistrationSystemException(studentNotFoundError());
 		}
 		
 		
@@ -141,14 +162,17 @@ public class RegistrationApp implements Runnable, MessageTypes
 	}
 	
 	
-	private String viewCatalogue(String[] content) 
+	private String viewCatalogue() 
 	{
 
 		return db.getCatalogue().toString();
 	}
 
-	private String removeStudentFromCourse(String[] content) {
+	private String removeStudentFromCourse(String[] content) throws RegistrationSystemException {
 
+		if(content.length != 4)
+			throw new RegistrationSystemException(invalidInputError());
+		
 		String id = content[0];
 		String courseName = content[1];
 
@@ -159,7 +183,7 @@ public class RegistrationApp implements Runnable, MessageTypes
 	
 		if(st == null)
 		{
-			return studentNotFoundError();
+			throw new RegistrationSystemException(studentNotFoundError());
 		}
 		
 		for(Registration r: st.getStudentRegList())
@@ -174,11 +198,14 @@ public class RegistrationApp implements Runnable, MessageTypes
 		}
 		
 		
-		return "Course not found";
+		throw new RegistrationSystemException(courseNotFoundError());
 	}
 
-	private String addStudentToCourse(String[] content)
+	private String addStudentToCourse(String[] content) throws RegistrationSystemException
 	{
+		if(content.length != 4)
+			throw new RegistrationSystemException(invalidInputError());
+		
 		String id = content[0];
 		String courseName = content[1];
 		int courseNumber = Integer.parseInt(content[2]);
@@ -189,7 +216,7 @@ public class RegistrationApp implements Runnable, MessageTypes
 		if(st == null)
 		{
 	
-			return studentNotFoundError();
+			throw new RegistrationSystemException(studentNotFoundError());
 		}
 		
 		
@@ -197,8 +224,10 @@ public class RegistrationApp implements Runnable, MessageTypes
 				
 		if (c == null)
 		{
-			return courseNotFoundError();
-		}
+			throw new RegistrationSystemException(courseNotFoundError());
+		}else if (sectionNumber >= c.getNumberOfOfferings())
+			throw new RegistrationSystemException(offeringDoesNotExistError());
+		
 		
 		Registration r = new Registration();
 		r.completeRegistration(st, c.getCourseOfferingAt(sectionNumber));
@@ -206,28 +235,43 @@ public class RegistrationApp implements Runnable, MessageTypes
 		return "Student registered in course";
 	}
 
-	private String searchCourseCatalogue(String[] content) {
-
+	private String searchCourseCatalogue(String[] content) throws RegistrationSystemException {
+		
+		if(content.length != 2)
+			throw new RegistrationSystemException(invalidInputError());
+		
+		
 		String courseName = content[0];
 		int courseNumber = Integer.parseInt(content[1]);
+
+			Course c = db.getCatalogue().searchCat(courseName, courseNumber);
+		if(c == null)
+			throw new RegistrationSystemException(courseNotFoundError());
 		
-		return db.getCatalogue().searchCat(courseName, courseNumber).toString();
+		return c.toString();
+
 	}
 	
+	private String invalidInputError()
+	{
+		return "Error: Invalid input";
+
+	}
+
+	private String offeringDoesNotExistError() 
+	{
+		return "Error: Offering does not exist";
+	}
+
 	
 	private String studentNotFoundError()
 	{
-		return("Error: Student not found");
+		return "Error: Student not found";
 	}
 	
 	private String courseNotFoundError()
 	{
-		return("Course not found");
-	}
-	
-	private String studentNotEnrolledError() 
-	{
-		return ("Error: Student not enrolled in any courses.");		
+		return "Course not found";
 	}
 
 }

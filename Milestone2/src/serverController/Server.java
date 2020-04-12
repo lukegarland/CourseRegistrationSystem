@@ -49,6 +49,7 @@ public class Server {
 			while(true)
 			{	
 				RegistrationApp r = new RegistrationApp(serverSocket.accept(), db); // Will block until ServerSocket accepts a new connection
+				System.out.println("New connection started!");
 				pool.execute(r);
 			}
 
