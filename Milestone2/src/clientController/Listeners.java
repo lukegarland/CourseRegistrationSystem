@@ -10,23 +10,37 @@ import common.*;
  * Responsible for creating and managing all listeners for all GUI interactions.
  * @author Guillaume Raymond-Fauteux
  * @since April 10 2020
- * @version 0.0
+ * @version 0.1
  *
  */
 public class Listeners 
 {
 
+	/**
+	 * The primary Jrame which contains all buttons to access sub menus.
+	 */
 	private MainFrame mainFrame;
+	/**
+	 * The client which can send messages to and from the server.
+	 */
 	private Client client;
 	
+	/**
+	 * Constructs a listener which keeps track of all user interaction with the GUI.
+	 * @param c The client from which messages may be sent and received from server.
+	 * @param m the main JFrame from which GUI system is rooted.
+	 */
 	public Listeners(Client c, MainFrame m)
 	{
 		this(m);
 		client = c;
 	}
 	
-	//Constructor for testing (no client needed)
-	public Listeners(MainFrame m)
+	/**
+	 * Constructs a listener which keeps track of all user interaction with the GUI.
+	 * @param m the main JFrame from which GUI system is rooted.
+	 */
+	private Listeners(MainFrame m)
 	{
 		mainFrame = m;
 		
@@ -58,31 +72,49 @@ public class Listeners
 		
 		addRemoveDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
 			String studentName = addRemoveDialog.getStudentName();
-			
-			addRemoveDialog.submitPressed();
-			
+
 			String response = client.communicate(MessageTypes.searchStudentCourses, studentName);
 			
+			if(response == null)
+			{
+				addRemoveDialog.setVisible(false);
+				return;
+			}
+			
+			
+			addRemoveDialog.submitPressed();
 			addRemoveDialog.writeToStudentContent(response);
 			
 			
+			//If no listeners are already attached to sub-dialog buttons, add them.
+			if( addRemoveDialog.getAddButton().getActionListeners().length == 0) {
 			
-			
-			addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
-				String[] results = addRemoveDialog.getCourseInfo(); 
-				String r1 = client.communicate(MessageTypes.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
-				JOptionPane.showMessageDialog(addRemoveDialog, r1);
+				addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
+					String[] results = addRemoveDialog.getCourseInfo(); 
+					String r1 = client.communicate(MessageTypes.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
+					
+					if(r1 != null) //successful message back
+						JOptionPane.showMessageDialog(addRemoveDialog, r1);
+					else
+						addRemoveDialog.setVisible(false);
+					
+				});
 				
-			});
+				
+				
+				
+				addRemoveDialog.getRemoveButton().addActionListener((ActionEvent eee) -> {
+					String[] results = addRemoveDialog.getCourseInfo();
+					String r1 = client.communicate(MessageTypes.removeCourse, studentName + " " + results[0] + " " + results[1]);
+					
+					if(r1 != null)
+						JOptionPane.showMessageDialog(addRemoveDialog, r1);
+					else
+						addRemoveDialog.setVisible(false);
+
+				});
+			}
 			
-			
-			
-			
-			addRemoveDialog.getRemoveButton().addActionListener((ActionEvent eee) -> {
-				String[] results = addRemoveDialog.getCourseInfo();
-				String r1 = client.communicate(MessageTypes.removeCourse, studentName + " " + results[0] + " " + results[1]);
-				JOptionPane.showMessageDialog(addRemoveDialog, r1);
-			});
 		});
 		
 		addRemoveDialog.setVisible(true);
@@ -101,7 +133,12 @@ public class Listeners
 			
 			String[] results = searchCatalogueDialog.getCourseInfo();
 			String r1 = client.communicate(MessageTypes.searchCatalogue, results[0] + " " + results[1]);
-			searchCatalogueDialog.writeToCourseContent(r1);
+			
+			if(r1 != null)
+				searchCatalogueDialog.writeToCourseContent(r1);
+			else 
+				searchCatalogueDialog.setVisible(false);
+
 		});
 		
 		searchCatalogueDialog.setVisible(true);
@@ -119,7 +156,11 @@ public class Listeners
 			String results = searchStudentDialog.getStudentName();
 			
 			String r1 = client.communicate(MessageTypes.searchStudentCourses, results);
-			searchStudentDialog.writeToStudentContent(r1);
+			if(r1 != null)
+				searchStudentDialog.writeToStudentContent(r1);
+			else
+				searchStudentDialog.setVisible(false);
+
 		});
 		
 		searchStudentDialog.setVisible(true);

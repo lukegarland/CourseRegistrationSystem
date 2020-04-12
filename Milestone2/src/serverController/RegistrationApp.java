@@ -1,12 +1,8 @@
 package serverController;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputFilter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
 
@@ -16,15 +12,14 @@ import serverModel.*;
 public class RegistrationApp implements Runnable, MessageTypes
 {
 
-	DBManager db;
-
+	ModelController controller;
 	private ObjectInputStream messageInputStream;
 	private ObjectOutputStream messageOutputStream;
 
 	public RegistrationApp(Socket s, DBManager db)
 	{
 		
-		this.db = db;
+		controller = new ModelController(db);
 		try {
 
 			messageInputStream = new ObjectInputStream((s.getInputStream()));
@@ -49,11 +44,22 @@ public class RegistrationApp implements Runnable, MessageTypes
 				Message input;
 
 				input = (Message) messageInputStream.readObject();
-
-				String response = actOnMessage(input.getType() + " " + input.getContent());
+				
+				String responseType, response;
+				try 
+				{
+					response = actOnMessage(input.getType() + " " + input.getContent());
+					responseType = MessageTypes.validResponse;
+					
+				}
+				catch (RegistrationSystemException e) // Something went wrong.
+				{
+					response = e.getMessage();
+					responseType = MessageTypes.errorResponse;
+				}
 
 				messageOutputStream.reset();
-				messageOutputStream.writeObject(new Message(MessageTypes.validResponse, response)); //TODO: check for error response?
+				messageOutputStream.writeObject(new Message(responseType, response)); //TODO: check for error response?
 			} 
 		}
 		catch (ClassNotFoundException | IOException e) 
@@ -64,7 +70,7 @@ public class RegistrationApp implements Runnable, MessageTypes
 
 	}
 
-	private String actOnMessage(String input) {
+	private String actOnMessage(String input) throws RegistrationSystemException {
 		// TODO
 		
 		String [] inputTokens = input.split("\\s+");
@@ -73,161 +79,37 @@ public class RegistrationApp implements Runnable, MessageTypes
 		
 		
 		String rv;
-		
-		switch(type)
+		try
 		{
-		
-			case MessageTypes.searchCatalogue:
-				rv = searchCourseCatalogue(content);
-				break;
-			case MessageTypes.addCourse:
-				rv = addStudentToCourse(content);
-				break;
-			case MessageTypes.removeCourse:
-				rv = removeStudentFromCourse(content);
-				break;
-			case MessageTypes.getCatalogue:
-				rv = viewCatalogue(content);
-				break;
-			case MessageTypes.searchStudentCourses:
-				rv = viewStudentCourse(content);
-				break;
+			switch(type)
+			{
+			
+				case MessageTypes.searchCatalogue:
+					rv = controller.searchCourseCatalogue(content);
+					break;
+				case MessageTypes.addCourse:
+					rv = controller.addStudentToCourse(content);
+					break;
+				case MessageTypes.removeCourse:
+					rv = controller.removeStudentFromCourse(content);
+					break;
+				case MessageTypes.getCatalogue:
+					rv = controller.viewCatalogue();
+					break;
+				case MessageTypes.searchStudentCourses:
+					rv = controller.viewStudentCourse(content);
+					break;
 
-			default: 
-				rv = "Errorz";
+				default: 
+					throw new RegistrationSystemException("Message Communication Error");
+			}
 		}
-
+		catch(NumberFormatException e)
+		{
+			throw new RegistrationSystemException(ModelController.invalidInputError());
+		}
+		
 		return rv;
-	}
-
-	private String viewStudentCourse(String[] content) {
-
-		Student st = searchStudent(content[0].trim());
-		if(st == null)
-		{
-			return studentNotFoundError();
-		}
-		
-		
-		return st.printCourses();
-	}
-
-	private Student searchStudent(String query)
-	{
-		
-		if(query.matches("\\d+"))// One or more digits...Searching by id number.
-		{
-			int id = Integer.parseInt(query);
-			
-			
-			for(Student s : db.getStudentList())
-			{
-				if(id == s.getStudentId())
-					return s;
-			}
-		}
-		else //If not int (i.e, searching by name)
-		{
-			String name = query;
-			for(Student s : db.getStudentList())
-			{
-				if(name.equals(s.getStudentName()))
-					return s;
-			}
-			
-		}
-		
-		return null;
-	}
-	
-	
-	private String viewCatalogue(String[] content) 
-	{
-
-		return db.getCatalogue().toString();
-	}
-
-	private String removeStudentFromCourse(String[] content) {
-
-		String id = content[0];
-		String courseName = content[1];
-
-		int courseNumber = Integer.parseInt(content[2]);
-
-		
-		Student st = searchStudent(id);
-	
-		if(st == null)
-		{
-			return studentNotFoundError();
-		}
-		
-		for(Registration r: st.getStudentRegList())
-		{
-			Course c = r.getTheOffering().getTheCourse();
-			if(c.getCourseName().equalsIgnoreCase(courseName) && c.getCourseNum() == courseNumber)
-			{
-				st.getStudentRegList().remove(r);
-				r.getTheOffering().getOfferingRegList().remove(r);
-				return "Removed student from course!";
-			}
-		}
-		
-		
-		return "Course not found";
-	}
-
-	private String addStudentToCourse(String[] content)
-	{
-		String id = content[0];
-		String courseName = content[1];
-		int courseNumber = Integer.parseInt(content[2]);
-		int sectionNumber = Integer.parseInt(content[3]);
-		
-		Student st = searchStudent(id);
-		
-		if(st == null)
-		{
-	
-			return studentNotFoundError();
-		}
-		
-		
-		Course c = db.getCatalogue().searchCat(courseName, courseNumber);
-				
-		if (c == null)
-		{
-			return courseNotFoundError();
-		}
-		
-		Registration r = new Registration();
-		r.completeRegistration(st, c.getCourseOfferingAt(sectionNumber));
-		
-		return "Student registered in course";
-	}
-
-	private String searchCourseCatalogue(String[] content) {
-
-		String courseName = content[0];
-		int courseNumber = Integer.parseInt(content[1]);
-		
-		return db.getCatalogue().searchCat(courseName, courseNumber).toString();
-	}
-	
-	
-	private String studentNotFoundError()
-	{
-		return("Error: Student not found");
-	}
-	
-	private String courseNotFoundError()
-	{
-		return("Course not found");
-	}
-	
-	private String studentNotEnrolledError() 
-	{
-		return ("Error: Student not enrolled in any courses.");		
 	}
 
 }

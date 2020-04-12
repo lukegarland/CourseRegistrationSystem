@@ -12,7 +12,7 @@ import javax.swing.*;
  * from course pop-up window.
  * @author Guillaume Raymond-Fauteux
  * @since April 10 2020
- * @version 0.0
+ * @version 0.1
  *
  */
 public class AddRemoveStudent extends JDialog {
@@ -106,12 +106,12 @@ public class AddRemoveStudent extends JDialog {
 	public AddRemoveStudent(JFrame owner, String title)
 	{
 		super(owner, title);
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(10,10));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		//North panel
 		north = new JPanel();
-		studentNameLabel = new JLabel("Student name:");
+		studentNameLabel = new JLabel("Student name or ID:");
 		studentName = new JTextField(20);
 		submitButton = new JButton("Submit");
 		
@@ -128,17 +128,24 @@ public class AddRemoveStudent extends JDialog {
 	 * Populates the remaining of the dialog pane when a students name has been input.
 	 */
 	public void submitPressed() {
+		
+		//If submit button was already pressed, don't create more panels.
+		if(west != null) {
+			pack();
+			return;
+		}
+		
 		//West Panel
 		west = new JPanel();
-		studentContent = new JTextArea(20,30);
+		studentContent = new JTextArea(20,50);
 		studentContentScroll = new JScrollPane(studentContent);
-		
+		studentContent.setEditable(false);
 		west.add(studentContentScroll);
 		add(west, BorderLayout.WEST);
 		
 		//East Panel
 		east = new JPanel();
-		east.setLayout( new GridLayout(10,3) );
+		east.setLayout( new GridLayout(4,2) );
 		courseName = new JTextField(4);
 		courseNameLabel = new JLabel("Course name:");
 		
@@ -185,7 +192,8 @@ public class AddRemoveStudent extends JDialog {
 	 * @param info String to be written to text area.
 	 */
 	public void writeToStudentContent(String info) {
-		studentContent.append(info);
+		studentContent.setText(info);
+		studentContent.setCaretPosition(0);
 	}
 	
 	/**

@@ -10,7 +10,7 @@ import javax.swing.*;
  * pop-up window.
  * @author Guillaume Raymond-Fauteux
  * @since April 10 2020
- * @version 0.0
+ * @version 0.1
  *
  */
 public class SearchCatalogue extends JDialog{
@@ -113,8 +113,10 @@ public class SearchCatalogue extends JDialog{
 		//South Panel
 		south = new JPanel();
 		
-		courseContent = new JTextArea(10,40);
+		courseContent = new JTextArea(20,50);
 		courseContentScroll = new JScrollPane(courseContent);
+		courseContent.setEditable(false);
+		courseContent.setCaretPosition(0);
 		
 		south.add(courseContentScroll);
 		add(south, BorderLayout.SOUTH);
@@ -138,7 +140,8 @@ public class SearchCatalogue extends JDialog{
 	 * @param info String to be written to text area.
 	 */
 	public void writeToCourseContent(String info) {
-		courseContent.append(info);
+		courseContent.setText(info);
+		courseContent.setCaretPosition(0);
 	}
 	
 //Getters and setters

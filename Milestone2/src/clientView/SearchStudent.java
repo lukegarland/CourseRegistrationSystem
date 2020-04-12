@@ -5,6 +5,14 @@ import java.awt.Dialog.ModalityType;
 
 import javax.swing.*;
 
+/**
+ * Provides the member variables and methods required for the creation of and interaction with the search student
+ * pop-up window.
+ * @author Guillaume Raymond-Fauteux
+ * @since April 10 202
+ * @version 0.1
+ *
+ */
 public class SearchStudent extends JDialog{
 	private static final long serialVersionUID = 1L;
 
@@ -61,7 +69,7 @@ public class SearchStudent extends JDialog{
 		
 		//North panel
 		north = new JPanel();
-		studentNameLabel = new JLabel("Student name:");
+		studentNameLabel = new JLabel("Student name or ID:");
 		studentName = new JTextField(20);
 		submitButton = new JButton("Submit");
 		
@@ -77,9 +85,9 @@ public class SearchStudent extends JDialog{
 	public void submitPressed() {
 		//Center Panel
 		center = new JPanel();
-		studentContent = new JTextArea(20,30);
+		studentContent = new JTextArea(20,50);
 		studentContentScroll = new JScrollPane(studentContent);
-		
+		studentContent.setEditable(false);
 		center.add(studentContentScroll);
 		add(center, BorderLayout.CENTER);
 		
@@ -91,7 +99,8 @@ public class SearchStudent extends JDialog{
 	 * @param info String to be written to text area.
 	 */
 	public void writeToStudentContent(String info) {
-		studentContent.append(info);
+		studentContent.setText(info);
+		studentContent.setCaretPosition(0);
 	}
 	
 	/**
