@@ -101,10 +101,12 @@ public class MainFrame extends JFrame {
 		
 		//Initializing the individual components
 		topLabel = new JLabel("Main Window");
+		
 		catalogueContent = new JTextArea(20,50);
 		catalogueContent.setEditable(false);
 		catalogueContent.setFont(new Font("Comic Sans MS", Font.PLAIN,10));
 		scrollPane = new JScrollPane(catalogueContent);
+		
 		showCatalogue = new JButton("Show Catalogue");
 		addRemove = new JButton("Add or Remove a Course");
 		viewStudentRegs = new JButton("View Student Registrations");
@@ -114,9 +116,12 @@ public class MainFrame extends JFrame {
 		topPanel.add(topLabel);
 		topButtonPanel.add(showCatalogue);
 		topButtonPanel.add(addRemove);
+		
 		bottomButtonPanel.add(viewStudentRegs);
 		bottomButtonPanel.add(searchCatalogue);
+		
 		centerPanel.add(scrollPane);
+		
 		topButtonPanel.add(bottomButtonPanel);
 		
 		//Adding the panels to the JFrame in the desired location
@@ -137,6 +142,7 @@ public class MainFrame extends JFrame {
 	public void fillCatalogueContent(String content)
 	{
 		catalogueContent.setText(content);
+		catalogueContent.setCaretPosition(0); //Scroll to top
 	}
 	/***GETTERS AND SETTERS***/
 	public JButton getAddRemove() {

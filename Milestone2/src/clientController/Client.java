@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+
 
 /**
  * @author lukeg
@@ -60,22 +62,23 @@ public class Client implements MessageTypes
 		
 		try {
 			messageOutputStream.reset(); // clear stream cache
-			
-			
 			messageOutputStream.writeObject(toSend);
 			
 			Message response = (Message) messageInputStream.readObject();
+			
 			if(response.getType().equals(MessageTypes.validResponse))
 				return response.getContent();	//Successful message back
-	 
-				
-			
-		} catch (ClassNotFoundException | IOException e) 
+			else // error
+			{
+				JOptionPane.showMessageDialog(null, response.getContent(), "Error Message", JOptionPane.ERROR_MESSAGE);
+			}
+		} 
+		catch (ClassNotFoundException | IOException e) 
 		{
 			e.printStackTrace();
 		}
 		
-		return "Error Response"; // TODO: Check for error responses. (Possibly just show JOptionPane)
+		return null; 
 		
 	}
 	

@@ -139,7 +139,7 @@ public class AddRemoveStudent extends JDialog {
 		west = new JPanel();
 		studentContent = new JTextArea(20,50);
 		studentContentScroll = new JScrollPane(studentContent);
-		
+		studentContent.setEditable(false);
 		west.add(studentContentScroll);
 		add(west, BorderLayout.WEST);
 		
@@ -193,6 +193,7 @@ public class AddRemoveStudent extends JDialog {
 	 */
 	public void writeToStudentContent(String info) {
 		studentContent.setText(info);
+		studentContent.setCaretPosition(0);
 	}
 	
 	/**

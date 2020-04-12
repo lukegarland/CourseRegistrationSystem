@@ -72,11 +72,17 @@ public class Listeners
 		
 		addRemoveDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
 			String studentName = addRemoveDialog.getStudentName();
-			
-			addRemoveDialog.submitPressed();
-			
+
 			String response = client.communicate(MessageTypes.searchStudentCourses, studentName);
 			
+			if(response == null)
+			{
+				addRemoveDialog.setVisible(false);
+				return;
+			}
+			
+			
+			addRemoveDialog.submitPressed();
 			addRemoveDialog.writeToStudentContent(response);
 			
 			
@@ -86,7 +92,11 @@ public class Listeners
 				addRemoveDialog.getAddButton().addActionListener((ActionEvent ee) -> {
 					String[] results = addRemoveDialog.getCourseInfo(); 
 					String r1 = client.communicate(MessageTypes.addCourse, studentName + " " + results[0] + " " + results[1] + " " + results[2]);
-					JOptionPane.showMessageDialog(addRemoveDialog, r1);
+					
+					if(r1 != null) //successful message back
+						JOptionPane.showMessageDialog(addRemoveDialog, r1);
+					else
+						addRemoveDialog.setVisible(false);
 					
 				});
 				
@@ -96,7 +106,12 @@ public class Listeners
 				addRemoveDialog.getRemoveButton().addActionListener((ActionEvent eee) -> {
 					String[] results = addRemoveDialog.getCourseInfo();
 					String r1 = client.communicate(MessageTypes.removeCourse, studentName + " " + results[0] + " " + results[1]);
-					JOptionPane.showMessageDialog(addRemoveDialog, r1);
+					
+					if(r1 != null)
+						JOptionPane.showMessageDialog(addRemoveDialog, r1);
+					else
+						addRemoveDialog.setVisible(false);
+
 				});
 			}
 			
@@ -118,7 +133,12 @@ public class Listeners
 			
 			String[] results = searchCatalogueDialog.getCourseInfo();
 			String r1 = client.communicate(MessageTypes.searchCatalogue, results[0] + " " + results[1]);
-			searchCatalogueDialog.writeToCourseContent(r1);
+			
+			if(r1 != null)
+				searchCatalogueDialog.writeToCourseContent(r1);
+			else 
+				searchCatalogueDialog.setVisible(false);
+
 		});
 		
 		searchCatalogueDialog.setVisible(true);
@@ -136,7 +156,11 @@ public class Listeners
 			String results = searchStudentDialog.getStudentName();
 			
 			String r1 = client.communicate(MessageTypes.searchStudentCourses, results);
-			searchStudentDialog.writeToStudentContent(r1);
+			if(r1 != null)
+				searchStudentDialog.writeToStudentContent(r1);
+			else
+				searchStudentDialog.setVisible(false);
+
 		});
 		
 		searchStudentDialog.setVisible(true);

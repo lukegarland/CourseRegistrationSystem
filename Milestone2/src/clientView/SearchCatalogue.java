@@ -115,6 +115,8 @@ public class SearchCatalogue extends JDialog{
 		
 		courseContent = new JTextArea(20,50);
 		courseContentScroll = new JScrollPane(courseContent);
+		courseContent.setEditable(false);
+		courseContent.setCaretPosition(0);
 		
 		south.add(courseContentScroll);
 		add(south, BorderLayout.SOUTH);
@@ -139,6 +141,7 @@ public class SearchCatalogue extends JDialog{
 	 */
 	public void writeToCourseContent(String info) {
 		courseContent.setText(info);
+		courseContent.setCaretPosition(0);
 	}
 	
 //Getters and setters
