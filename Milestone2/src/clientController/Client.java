@@ -1,5 +1,5 @@
 /**
- * 
+ * .
  */
 package clientController;
 import clientView.*;
@@ -13,6 +13,8 @@ import javax.swing.JOptionPane;
 
 
 /**
+ * Main client class.
+ * 
  * @author lukeg
  *
  */
@@ -21,6 +23,7 @@ public class Client implements MessageTypes
 
 	
 	private MainFrame GUI;
+	@SuppressWarnings("unused")
 	private Listeners GUIController;
 	private Socket socket;
 ;

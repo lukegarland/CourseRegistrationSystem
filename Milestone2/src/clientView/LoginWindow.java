@@ -12,6 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+/**
+ * Not used for Milestone 2.
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ *
+ */
 public class LoginWindow extends JDialog {
 	/**
 	 * 

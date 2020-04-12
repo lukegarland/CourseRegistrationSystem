@@ -2,6 +2,13 @@ package common;
 
 import java.io.Serializable;
 
+/**
+ * Basic Message Class to allow for messages to be sent across sockets.
+ * type should be a final String derived from MessageTypes. 
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * 
+ *
+ */
 public class Message implements MessageTypes, Serializable
 {
 

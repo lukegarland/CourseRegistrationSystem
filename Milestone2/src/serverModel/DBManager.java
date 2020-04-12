@@ -102,15 +102,15 @@ public class DBManager {
 		ArrayList<Course> courseList = new ArrayList<Course>();;		
 		courseList.add(new Course ("ENGG", 233));
 		courseList.get(0).addOffering(new CourseOffering(0, 25));
-		courseList.get(0).addOffering(new CourseOffering(0, 20));
+		courseList.get(0).addOffering(new CourseOffering(1, 20));
 
 		courseList.add(new Course ("ENSF", 409));
 		courseList.get(1).addOffering(new CourseOffering(0, 40));
-		courseList.get(1).addOffering(new CourseOffering(0, 45));
+		courseList.get(1).addOffering(new CourseOffering(1, 45));
 
 		courseList.add(new Course ("PHYS", 259));
 		courseList.get(2).addOffering(new CourseOffering(0, 35));
-		courseList.get(2).addOffering(new CourseOffering(0, 50));
+		courseList.get(2).addOffering(new CourseOffering(1, 50));
 
 		courseList.add(new Course ("ENGG", 200));
 		courseList.get(3).addOffering(new CourseOffering(0, 100));
@@ -173,6 +173,10 @@ public class DBManager {
 		}
 
 	}
+	/**
+	 * Used to populate and test the textfiles stored.
+	 * @param args not used
+	 */
 	public static void main(String[] args) 
 	{
 		DBManager db = new DBManager();

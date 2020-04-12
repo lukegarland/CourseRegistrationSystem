@@ -8,12 +8,12 @@ import javax.swing.*;
 /**
  * Provides the member variables and methods required for the creation of and interaction with the search student
  * pop-up window.
- * @author Guillaume Raymond-Fauteux
- * @since April 10 202
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * @since April 10 2020
  * @version 0.1
  *
  */
-public class SearchStudent extends JDialog{
+public class SearchStudentWindow extends JDialog{
 	private static final long serialVersionUID = 1L;
 
 	/*
@@ -52,7 +52,7 @@ public class SearchStudent extends JDialog{
 	 * Constructs a dialog pane where user can search through a student's courses.
 	 * @param owner JFrame which owns the dialog pane.
 	 */
-	public SearchStudent(JFrame owner) {
+	public SearchStudentWindow(JFrame owner) {
 		this(owner, "Search for student");
 	}
 	
@@ -61,7 +61,7 @@ public class SearchStudent extends JDialog{
 	 * @param owner JFrame which owns the dialog pane.
 	 * @param title Name of the dialog pane.
 	 */
-	public SearchStudent(JFrame owner, String title) {
+	public SearchStudentWindow(JFrame owner, String title) {
 		super(owner, title);
 		
 		setLayout(new BorderLayout());
@@ -83,6 +83,11 @@ public class SearchStudent extends JDialog{
 	}
 	
 	public void submitPressed() {
+		if(center != null)
+		{
+			pack();
+			return;
+		}
 		//Center Panel
 		center = new JPanel();
 		studentContent = new JTextArea(20,50);

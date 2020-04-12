@@ -8,12 +8,12 @@ import javax.swing.*;
 /**
  * Provides the member variables and methods required for the creation of and interaction with the search catalogue
  * pop-up window.
- * @author Guillaume Raymond-Fauteux
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
  * @since April 10 2020
  * @version 0.1
  *
  */
-public class SearchCatalogue extends JDialog{
+public class SearchCatalogueWindow extends JDialog{
 	private static final long serialVersionUID = 1L;
 	
 	/*
@@ -65,7 +65,7 @@ public class SearchCatalogue extends JDialog{
 	 * Constructs a dialog pane where a user can search for course's offerings and details.
 	 * @param owner JFrame which owns the dialog pane.
 	 */
-	public SearchCatalogue(JFrame owner) {
+	public SearchCatalogueWindow(JFrame owner) {
 		this(owner, "Search catalogue");
 	}
 	
@@ -74,7 +74,7 @@ public class SearchCatalogue extends JDialog{
 	 * @param owner JFrame which owns the dialog pane.
 	 * @param title Name of the dialog pane.
 	 */
-	public SearchCatalogue(JFrame owner, String title) {
+	public SearchCatalogueWindow(JFrame owner, String title) {
 		super(owner, title);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -110,6 +110,12 @@ public class SearchCatalogue extends JDialog{
 	 * Populates the remaining of the dialog pane when a course name and number has been input.
 	 */
 	public void submitPressed() {
+		
+		if(south != null)// if submit was already pressed, dont create more panels
+		{
+			pack();
+			return;
+		}
 		//South Panel
 		south = new JPanel();
 		

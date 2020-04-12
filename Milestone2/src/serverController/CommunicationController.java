@@ -9,14 +9,26 @@ import java.util.Arrays;
 import common.*;
 import serverModel.*;
 
-public class RegistrationApp implements Runnable, MessageTypes
+/**
+ * 
+ * This is the class that will directly communicate with the client. It will create and parse messages to and from 
+ * the socket and invoke ModelController's methods to manipulate the database
+ * 
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ *
+ */
+public class CommunicationController implements Runnable, MessageTypes
 {
 
-	ModelController controller;
+	private ModelController controller;
 	private ObjectInputStream messageInputStream;
 	private ObjectOutputStream messageOutputStream;
 
-	public RegistrationApp(Socket s, DBManager db)
+	/**
+	 * @param s Socket
+	 * @param db Reference to the database
+	 */
+	public CommunicationController(Socket s, DBManager db)
 	{
 		
 		controller = new ModelController(db);
@@ -32,6 +44,9 @@ public class RegistrationApp implements Runnable, MessageTypes
 		}
 	}
 	
+	/**
+	 * Main runnable class to receive and send messages
+	 */
 	@Override
 	public void run() 
 	{
@@ -70,6 +85,11 @@ public class RegistrationApp implements Runnable, MessageTypes
 
 	}
 
+	/**
+	 * @param input Content of a message from the Client
+	 * @return Message content to send back to the client
+	 * @throws RegistrationSystemException if ModelController throws an exception
+	 */
 	private String actOnMessage(String input) throws RegistrationSystemException {
 		// TODO
 		

@@ -7,6 +7,12 @@ import java.util.concurrent.Executors;
 
 import serverModel.DBManager;
 
+/**
+ * Main server class. 
+ * 
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ *
+ */
 public class Server {
 
 	
@@ -41,14 +47,17 @@ public class Server {
 			
 	}
 	
-	public void communicateWithClient()
+	/**
+	 * Will wait for a client to connect to the server, then creates a communication controller to communicate with the client.
+	 */
+	private void communicateWithClient()
 	{
 		
 		try 
 		{
 			while(true)
 			{	
-				RegistrationApp r = new RegistrationApp(serverSocket.accept(), db); // Will block until ServerSocket accepts a new connection
+				CommunicationController r = new CommunicationController(serverSocket.accept(), db); // Will block until ServerSocket accepts a new connection
 				System.out.println("New connection started!");
 				pool.execute(r);
 			}
@@ -61,6 +70,10 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Starts the server
+	 * @param args not used.
+	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Server server = new Server(8099);

@@ -21,7 +21,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * update the GUI, and get the button content.
  * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
- * @version 1.1
+ * @version 0.1
  * @since April 11, 2020
  *
  */

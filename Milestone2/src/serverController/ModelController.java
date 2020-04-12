@@ -6,10 +6,15 @@ import serverModel.DBManager;
 import serverModel.Registration;
 import serverModel.Student;
 
+/**
+ * Controller for the model. Communication controller will call this object's  methods in order to interface with the model/database.
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ *
+ */
 public class ModelController {
 
 	
-	DBManager db;
+	private DBManager db;
 	
 	public ModelController(DBManager db) {
 		this.db = db;
@@ -18,6 +23,12 @@ public class ModelController {
 
 	
 
+	/**
+	 * View the student's courses.
+	 * @param content Either student ID or student's name. e.g. {"Michael", "Smith"}
+	 * @return A formatted string displaying the student's courses
+	 * @throws RegistrationSystemException If student does not exist or invalid input
+	 */
 	protected String viewStudentCourse(String[] content) throws RegistrationSystemException {
 
 		if(content.length == 0)
@@ -34,6 +45,11 @@ public class ModelController {
 		return st.printCourses();
 	}
 
+	/**
+	 * 
+	 * @param query Search key (Student id or name)
+	 * @return the appropriate Student object. Null if not found
+	 */
 	private Student searchStudent(String query)
 	{
 		
@@ -63,15 +79,24 @@ public class ModelController {
 	}
 	
 	
+	/**
+	 * @return the course catalog in a formatted string
+	 */
 	protected String viewCatalogue() 
 	{
 
 		return db.getCatalogue().toString();
 	}
 
+	/**
+	 * Remove a student from a course
+	 * @param content Format {"id or name", "Course name", "Course Number"}
+	 * @return "Removed student from course!" if successful
+	 * @throws RegistrationSystemException if student or course is not found
+	 */
 	protected String removeStudentFromCourse(String[] content) throws RegistrationSystemException {
 
-		if(content.length != 4)
+		if(content.length != 3)
 			throw new RegistrationSystemException(invalidInputError());
 		
 		String id = content[0];
@@ -102,6 +127,12 @@ public class ModelController {
 		throw new RegistrationSystemException(courseNotFoundError());
 	}
 
+	/**
+	 * Add a student from a course
+	 * @param content Format {"id or name", "Course name", "Course Number", "Section Number"}
+	 * @return "Added student to course!" if successful
+	 * @throws RegistrationSystemException if student or course is not found
+	 */
 	protected String addStudentToCourse(String[] content) throws RegistrationSystemException
 	{
 		if(content.length != 4)
@@ -136,6 +167,11 @@ public class ModelController {
 		return "Student registered in course";
 	}
 
+	/**
+	 * @param Format: {"Course name", "Course Number"}
+	 * @return Formatted string of the offering details of the course
+	 * @throws RegistrationSystemException if course is not found
+	 */
 	protected String searchCourseCatalogue(String[] content) throws RegistrationSystemException {
 		
 		if(content.length != 2)

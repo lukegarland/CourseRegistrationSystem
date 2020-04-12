@@ -1,5 +1,10 @@
 package common;
 
+/**
+ * Different message type constants
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ *
+ */
 public interface MessageTypes 
 {
 

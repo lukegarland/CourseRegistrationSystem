@@ -10,12 +10,12 @@ import javax.swing.*;
 /**
  * Provides the member variables and methods required for the creation of and interaction with the add/remove student
  * from course pop-up window.
- * @author Guillaume Raymond-Fauteux
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
  * @since April 10 2020
  * @version 0.1
  *
  */
-public class AddRemoveStudent extends JDialog {
+public class AddRemoveStudentWindow extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 
@@ -94,7 +94,7 @@ public class AddRemoveStudent extends JDialog {
 	 * Constructs a dialog pane where user can add or remove a course from a student.
 	 * @param owner JFrame which owns the created dialog pane.
 	 */
-	public AddRemoveStudent(JFrame owner) {
+	public AddRemoveStudentWindow(JFrame owner) {
 		this(owner, "Add/remove student");
 	}
 	
@@ -103,7 +103,7 @@ public class AddRemoveStudent extends JDialog {
 	 * @param owner JFrame which owns the created dialog pane.
 	 * @param title Name of the dialog pane.
 	 */
-	public AddRemoveStudent(JFrame owner, String title)
+	public AddRemoveStudentWindow(JFrame owner, String title)
 	{
 		super(owner, title);
 		setLayout(new BorderLayout(10,10));

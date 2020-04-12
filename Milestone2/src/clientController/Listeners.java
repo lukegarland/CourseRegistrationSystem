@@ -1,5 +1,4 @@
 package clientController;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
@@ -8,9 +7,10 @@ import clientView.*;
 import common.*;
 /**
  * Responsible for creating and managing all listeners for all GUI interactions.
+ * This is effectively the GUI Controller
  * @author Guillaume Raymond-Fauteux
  * @since April 10 2020
- * @version 0.1
+ * @version 1.0
  *
  */
 public class Listeners 
@@ -67,7 +67,7 @@ public class Listeners
 	 * Creates the add/remove student pop-up window and assigns appropriate listeners.
 	 */
 	private void addRemoveDialog() {
-		AddRemoveStudent addRemoveDialog = new AddRemoveStudent(mainFrame);
+		AddRemoveStudentWindow addRemoveDialog = new AddRemoveStudentWindow(mainFrame);
 		
 		
 		addRemoveDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
@@ -125,7 +125,7 @@ public class Listeners
 	 * Creates the search catalogue pop-up window and assigns appropriate listeners.
 	 */
 	private void searchCatalogueDialog() {
-		SearchCatalogue searchCatalogueDialog = new SearchCatalogue(mainFrame);
+		SearchCatalogueWindow searchCatalogueDialog = new SearchCatalogueWindow(mainFrame);
 		
 		searchCatalogueDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
 			
@@ -142,13 +142,14 @@ public class Listeners
 		});
 		
 		searchCatalogueDialog.setVisible(true);
+		searchCatalogueDialog.pack();
 	}
 	
 	/**
 	 * Creates the search student pop-up window and assigns appropriate listeners.
 	 */
 	private void searchStudentDialog() {
-		SearchStudent searchStudentDialog = new SearchStudent(mainFrame);
+		SearchStudentWindow searchStudentDialog = new SearchStudentWindow(mainFrame);
 		
 		searchStudentDialog.getSubmitButton().addActionListener((ActionEvent e) -> {
 			
@@ -164,6 +165,7 @@ public class Listeners
 		});
 		
 		searchStudentDialog.setVisible(true);
+		searchStudentDialog.pack();
 	}
 
 
