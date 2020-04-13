@@ -6,6 +6,7 @@ public class Course {
 
 	private String courseName;
 	private int courseNum;
+	@SuppressWarnings("unused")
 	private ArrayList<Course> preReq;
 	private ArrayList<CourseOffering> offeringList;
 
