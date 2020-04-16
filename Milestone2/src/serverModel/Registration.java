@@ -1,6 +1,6 @@
 package serverModel;
 
-
+import common.RegistrationSystemException;
 
 public class Registration {
 	private Student theStudent;
@@ -8,14 +8,14 @@ public class Registration {
 	private char grade;
 	
 	
-	public void completeRegistration (Student st, CourseOffering of) 
+	public void completeRegistration (Student st, CourseOffering of) throws RegistrationSystemException 
 	{
 		theStudent = st;
 		theOffering = of;
 		addRegistration ();
 	}
 	
-	private void addRegistration () 
+	private void addRegistration () throws RegistrationSystemException 
 	{
 		theStudent.addRegistration(this);
 		theOffering.addRegistration(this);

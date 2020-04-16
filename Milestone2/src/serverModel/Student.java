@@ -3,6 +3,8 @@ package serverModel;
 
 import java.util.ArrayList;
 
+import common.RegistrationSystemException;
+
 public class Student {
 	
 	private String studentName;
@@ -44,12 +46,21 @@ public class Student {
 		return st;
 	}
 
-	public void addRegistration(Registration registration) 
+	public void addRegistration(Registration registration) throws RegistrationSystemException 
 	{
+		Course courseToAdd = registration.getTheOffering().getTheCourse();
+		
+		for(Registration r : studentRegList)
+		{
+			if(r.getTheOffering().getTheCourse().equals(courseToAdd)) // Compare all courses the student is registered in against the course to add
+			{
+				throw new RegistrationSystemException("Error: Student is already enrolled in this course.");
+			}
+		}
 		if(studentRegList.size() <= 5)
 			studentRegList.add(registration);
 		else
-			System.err.println("Error: Cannot register, as student cannot be enrolled in 6 or more courses.");
+			throw new RegistrationSystemException("Error: Cannot register, as student cannot be enrolled in 6 or more courses.");
 	}
 
 	public String printCourses()

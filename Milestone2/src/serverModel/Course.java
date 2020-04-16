@@ -64,6 +64,14 @@ public class Course {
 		st += "\n-------\n";
 		return st;
 	}
+	
+	public boolean equals(Course c)
+	{
+		if(c.courseName.equals(this.courseName) && c.courseNum == this.courseNum)
+			return true;
+		return false;
+		
+	}
 
 	public CourseOffering getCourseOfferingAt(int i) 
 	{
