@@ -1,189 +1,233 @@
 package serverModel;
-
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 
-//This class is simulating a database for our
-//program
-public class DBManager {
+public class DBManager implements IDBCredentials{
+	
+	// Attributes
+	private Connection conn;
 	
 	private volatile CourseCatalogue courseList;
-	private volatile ArrayList <Student> studentList;
-	
-	
+	private volatile ArrayList<Student> studentList;
+
 	public synchronized CourseCatalogue getCatalogue() {
 		return courseList;
 	}
-
-
-
+	
 	public synchronized ArrayList<Student> getStudentList() {
 		return studentList;
 	}
 	
-
-
-	public void loadFromTextFile(String studentFile, String courseFile)
-	{
-		String input;
-		String[] splitInput;
-		
-		ArrayList<Course> courseList = new ArrayList<Course>();
-		courseList = new ArrayList<Course>();
-		this.studentList = new ArrayList<Student>();
-
-		
+	public void initializeConnection() {
 		try {
-			BufferedReader f = new BufferedReader(new FileReader(studentFile));
-			while(true)
-			{
-				input = f.readLine();
-				if(input == null)
-					break;
-				
-				splitInput = input.split("\\s+");
-				this.studentList.add(new Student(splitInput[0], Integer.parseInt(splitInput[1])));
-			}
-			f.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// Register JDBC driver
+			Driver driver = new com.mysql.cj.jdbc.Driver();
+			DriverManager.registerDriver(driver);
+			// Open a connection
+			conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+		} catch (SQLException e) {
+			System.err.println("Problem opening connection to mySQL DB.");
 			e.printStackTrace();
 		}
-		
-		int i = 0;
-		
-		
-		try {
-			BufferedReader f1 = new BufferedReader(new FileReader(courseFile));
-			while(true)
-			{
-				input = f1.readLine();
-				if(input == null)
-					break;
-				
-				splitInput = input.split("\\s+");
-				courseList.add(new Course(splitInput[0], Integer.parseInt(splitInput[1])));
-				courseList.get(i).addOffering(new CourseOffering(Integer.parseInt(splitInput[2]), Integer.parseInt(splitInput[3])));
-				courseList.get(i).addOffering(new CourseOffering(Integer.parseInt(splitInput[4]), Integer.parseInt(splitInput[5])));
+	}
 
-				i++;
-				
-			}
-			
-			f1.close();
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+	public void close() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
-		this.courseList = new CourseCatalogue();
-		this.courseList.setCourseList(courseList);
-		
 	}
 	
-	
-	//===============Below this is text file setup and testing===============
-
-	private void loadDatabaseSim()
-	{
-		ArrayList<Course> courseList = new ArrayList<Course>();;		
-		courseList.add(new Course ("ENGG", 233));
-		courseList.get(0).addOffering(new CourseOffering(0, 25));
-		courseList.get(0).addOffering(new CourseOffering(1, 20));
-
-		courseList.add(new Course ("ENSF", 409));
-		courseList.get(1).addOffering(new CourseOffering(0, 40));
-		courseList.get(1).addOffering(new CourseOffering(1, 45));
-
-		courseList.add(new Course ("PHYS", 259));
-		courseList.get(2).addOffering(new CourseOffering(0, 35));
-		courseList.get(2).addOffering(new CourseOffering(1, 50));
-
-		courseList.add(new Course ("ENGG", 200));
-		courseList.get(3).addOffering(new CourseOffering(0, 100));
-		courseList.get(3).addOffering(new CourseOffering(1, 50));
-
-		courseList.add(new Course ("ENGG", 201));
-		courseList.get(4).addOffering(new CourseOffering(0, 70));
-		courseList.get(4).addOffering(new CourseOffering(1, 70));
-	
-		courseList.add(new Course ("ENGG", 202));
-		courseList.get(5).addOffering(new CourseOffering(0, 80));
-		courseList.get(5).addOffering(new CourseOffering(1, 80));
-
-		courseList.add(new Course ("ENGG", 225));
-		courseList.get(6).addOffering(new CourseOffering(0, 50));
-		courseList.get(6).addOffering(new CourseOffering(1, 50));
-
-		courseList.add(new Course ("ENCM", 511));
-		courseList.get(7).addOffering(new CourseOffering(0, 0x42));
-		courseList.get(7).addOffering(new CourseOffering(1, 0x2B - 1));
-		
+	public void loadStudentList(){
+		initializeConnection();
 		studentList = new ArrayList<Student>();
 		
-		studentList.add(new Student ("Sara", 1));
-		studentList.add(new Student ("Bob", 2));
-		studentList.add(new Student ("Joe", 3));
-		studentList.add(new Student ("Billy", 4));
-		studentList.add(new Student ("Megan", 5));
-		studentList.add(new Student ("Cameron", 6));
-		studentList.add(new Student ("Guillaume", 7));
-		studentList.add(new Student ("Luke", 8));
-		studentList.add(new Student ("Taylor", 17));
-		studentList.add(new Student ("Michael", 42));
-		this.courseList = new CourseCatalogue();
-		this.courseList.setCourseList(courseList);
-		
-		
-	}
-	
-	private void createFileFromSim()
-	{
 		try {
-			FileWriter f = new FileWriter(new File("StudentData.txt"));
-			FileWriter f1 = new FileWriter(new File("CourseData.txt"));
-
-			
-			for(Student s : studentList)
-			{
-				f.write(s.getStudentName() + " " +s.getStudentId() + "\n");
+			String query = "select id, name from mydb.student";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				studentList.add(new Student(name, id));
 			}
-			for(Course c: courseList.getCourseList())
-			{
-				f1.write(c.getCourseName() + " " +c.getCourseNum() + " "+ c.getCourseOfferingAt(0).getSecNum()+ " " +" " + c.getCourseOfferingAt(0).getSecCap() + " "+ c.getCourseOfferingAt(1).getSecNum()+ " " +" " + c.getCourseOfferingAt(1).getSecCap()+ "\n");
-			}
-			f.flush();
-			f1.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("Problem selecting student");
 			e.printStackTrace();
 		}
-
+		close();
 	}
-	/**
-	 * Used to populate and test the textfiles stored.
-	 * @param args not used
-	 */
-	public static void main(String[] args) 
-	{
-		DBManager db = new DBManager();
-		db.loadDatabaseSim();
-		db.createFileFromSim();
+	
+	public void loadCourseList() {
+		initializeConnection();
+		ArrayList<Course> courseList = new ArrayList<Course>();
+		courseList = new ArrayList<Course>();
 		
-		db.loadFromTextFile("StudentData.txt", "CourseData.txt");
-		return;
+		try {
+			String query = "select id, name, num, off1, off1cap, off2, off2cap from mydb.course";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			int i = 0;
+			while(rs.next()) {
+				String name = rs.getString("name");
+				int num = rs.getInt("num");
+				int off1 = rs.getInt("off1");
+				int off1cap = rs.getInt("off1cap");
+				int off2 = rs.getInt("off2");
+				int off2cap = rs.getInt("off2cap");
+				
+				courseList.add( new Course(name, num) );
+				courseList.get(i).addOffering( new CourseOffering(off1, off1cap) );
+				courseList.get(i).addOffering( new CourseOffering(off2, off2cap) );
+				i++;
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("Problem selecting course");
+			e.printStackTrace();
+		}
+		
+		this.courseList = new CourseCatalogue();
+		this.courseList.setCourseList(courseList);
+		close();
 	}
+
+	
+	
+//Below are methods to help populate the DB when first being run on different machines.
+	
+	public void createStudentTable() {
+		String sql = "CREATE TABLE STUDENT " + "(id INTEGER not NULL, " + " name VARCHAR(255), "
+				+ " PRIMARY KEY ( id ))";
+
+		try {
+			Statement stmt = conn.createStatement(); // construct a statement
+			stmt.executeUpdate(sql); // execute my query (i.e. sql)
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Table can NOT be created!");
+		}
+		System.out.println("Created student table in given database...");
+	}
+	
+	public void populateStudentTable() {
+		insertUser(1, "Guillaume");
+		insertUser(2, "Aidan");
+		insertUser(3, "Michele");
+		insertUser(4, "Dylan");
+		insertUser(5, "Tyler");
+		insertUser(6, "Hailey");
+		insertUser(7, "Sadie");
+		insertUser(8, "Luke");
+		insertUser(9, "Cam");
+		insertUser(17, "Taylor");
+		insertUser(42, "Mike");
+	}
+	
+	public void insertUser(int id, String name) {
+		try {
+			String query = "INSERT INTO STUDENT (ID,name) values(?,?)";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, id);
+			pStat.setString(2, name);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			System.out.println("Problem inserting user");
+			e.printStackTrace();
+		}
+	}
+	
+	public void createCourseTable() {
+		String sql = "CREATE TABLE COURSE " + "(id INTEGER not NULL, " + " name VARCHAR(255), " + "num INTEGER, "
+				+ " off1 INTEGER," + " off1cap INTEGER, " + " off2 INTEGER, "
+				+ " off2cap INTEGER, " + " PRIMARY KEY ( id ))";
+
+		try {
+			Statement stmt = conn.createStatement(); // construct a statement
+			stmt.executeUpdate(sql); // execute my query (i.e. sql)
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Table can NOT be created!");
+		}
+		System.out.println("Created course table in given database...");
+	}
+	
+	public void populateCourseTable() {
+		insertCourse(1,"ENGG", 233, 0, 25, 1, 20 );
+		insertCourse(2,"ENGG", 200, 0, 40, 1, 45 );
+		insertCourse(3,"ENGG", 201, 0, 35, 1, 50 );
+		insertCourse(4,"ENGG", 202, 0, 100, 1, 50 );
+		insertCourse(5,"ENGG", 225, 0, 70, 1, 70 );
+		insertCourse(6,"ENCM", 511, 0, 80, 1, 80 );
+		insertCourse(7,"ENSF", 409, 0, 50, 1, 50 );
+		insertCourse(8,"PHYS", 259, 0, 66, 1, 42 );
+	}
+	
+	public void insertCourse(int id, String name, int num, int off1, int off1cap, int off2, int off2cap ) {
+		try {
+			String query = "INSERT INTO COURSE (id,name,num,off1,off1cap,off2,off2cap) values(?,?,?,?,?,?,?)";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, id);
+			pStat.setString(2, name);
+			pStat.setInt(3, num);
+			pStat.setInt(4, off1);
+			pStat.setInt(5, off1cap);
+			pStat.setInt(6, off2);
+			pStat.setInt(7, off2cap);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			System.out.println("Problem inserting course");
+			e.printStackTrace();
+		}
+	}
+	
+	public void doAThing() {
+		try {
+			String query = "select id, name from mydb.student";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				System.out.println(id + " " + name);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.out.println("problem inserting user");
+			e.printStackTrace();
+		}
+	}
+	
+	public void addColumn() {
+		String sql = "ALTER TABLE student ADD last_name VARCHAR(40)";
+		
+		try {
+			Statement stmt = conn.createStatement(); // construct a statement
+			stmt.executeUpdate(sql); // execute my query (i.e. sql)
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("problem with adding a column");
+		}
+	}
+
+//Run main to init and populate DB on local system
+	public static void main(String[] args0) {
+		DBManager init = new DBManager();
+		init.initializeConnection();
+		init.createStudentTable();
+		init.createCourseTable();
+		init.populateStudentTable();
+		init.populateCourseTable();
+		init.close();
+	}
+
 }

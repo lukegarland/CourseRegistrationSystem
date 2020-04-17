@@ -32,7 +32,9 @@ public class Server {
 	public Server(int port)
 	{
 		db = new DBManager();
-		db.loadFromTextFile("StudentData.txt", "CourseData.txt");
+		//db.loadFromTextFile("StudentData.txt", "CourseData.txt");
+		db.loadCourseList();
+		db.loadStudentList();
 			try
 			{
 				serverSocket = new ServerSocket(port);
