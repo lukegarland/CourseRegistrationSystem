@@ -51,7 +51,7 @@ public class SearchStudentWindow extends JDialog{
 	 * Constructs a dialog pane where user can search through a student's courses.
 	 * @param owner JFrame which owns the dialog pane.
 	 */
-	public SearchStudentWindow(JFrame owner) {
+	public SearchStudentWindow(MainFrame owner) {
 		this(owner, "Search for student");
 	}
 	
@@ -60,7 +60,7 @@ public class SearchStudentWindow extends JDialog{
 	 * @param owner JFrame which owns the dialog pane.
 	 * @param title Name of the dialog pane.
 	 */
-	public SearchStudentWindow(JFrame owner, String title) {
+	public SearchStudentWindow(MainFrame owner, String title) {
 		super(owner, title);
 		
 		setLayout(new BorderLayout());
@@ -76,6 +76,12 @@ public class SearchStudentWindow extends JDialog{
 		north.add(studentName);
 		north.add(submitButton);
 		add(north, BorderLayout.NORTH);
+		if(!owner.isAdmin()) {
+			studentName.setEditable(false);
+			studentName.setText(owner.getStudentId());
+			submitButton.doClick();
+			submitPressed();
+		}
 		
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		pack();

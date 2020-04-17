@@ -53,9 +53,21 @@ public class Listeners
 		mainFrame.getViewStudentRegs().addActionListener((ActionEvent eee) -> {
 			searchStudentDialog();
 		});
+		mainFrame.getAddOffering().addActionListener((ActionEvent eee) -> {
+			addOffering();
+		});
 	}
 	
 	
+	private void addOffering() {
+		// TODO Auto-generated method stub
+		AddCourseOfferingWindow addOfferingDialog = new AddCourseOfferingWindow(mainFrame);
+		String response = client.communicate(MessageTypes.getCatalogue, "");
+		addOfferingDialog.writeToStudentContent(response);
+		
+	}
+
+
 	/**
 	 * Creates the add/remove student pop-up window and assigns appropriate listeners.
 	 */
@@ -163,7 +175,6 @@ public class Listeners
 	private void loginToServer() {
 		LoginWindow loginDialog = new LoginWindow(mainFrame, "Login Window");
 			loginDialog.getLoginButton().addActionListener((ActionEvent e) -> {
-			
 			
 			String results = loginDialog.getUsername() + " " + loginDialog.getPassword();
 			String r1;

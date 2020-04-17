@@ -223,8 +223,8 @@ public class MainFrame extends JFrame {
 	/**
 	 * @return the studentId
 	 */
-	public int getStudentId() {
-		return studentId;
+	public String getStudentId() {
+		return Integer.toString(studentId);
 	}
 	/**
 	 * @return the addOffering

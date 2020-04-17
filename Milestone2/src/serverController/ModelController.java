@@ -215,7 +215,6 @@ public class ModelController {
 		db.loadAdminLoginList();
 		for(String[] s : db.getAdminLoginList())
 		{
-			System.out.println(content[0] + content[1] + s[0] + s[1]);
 			if(s[0].equals(content[0]) && s[1].equals(content[1]))
 				return "admin";
 		}
@@ -229,6 +228,13 @@ public class ModelController {
 			if(s[0].equals(content[0]) && s[1].equals(content[1]))
 				return "student" + " " + s[2];
 		}
+		return null;
+	}
+
+
+
+	public String addOffering(String[] content) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

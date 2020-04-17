@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -17,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Not used for Milestone 2.
@@ -51,7 +51,7 @@ public class LoginWindow extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);			
 		
 		// North Panel
-		north = new JPanel(new GridLayout(0,1,10,5));
+		north = new JPanel(new GridLayout(0,1));
 		
 		topLabel = new JLabel("Please Login with your Username and Password.");
 		topLabel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -65,17 +65,18 @@ public class LoginWindow extends JDialog {
 		bg.add(student);
 		bg.add(admin);
 		
+		north.setBorder(new EmptyBorder(5, 5, 5, 5));
 		north.add(topLabel);
 		north.add(Box.createVerticalGlue());
 		north.add(student);
 		north.add(admin);
-		north.add(Box.createVerticalGlue());
+
 		north.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(north, BorderLayout.NORTH);
 		
 		
 		// Center Panel
-		center = new JPanel(new GridLayout(0,2,5,5));
+		center = new JPanel(new GridLayout(0,2));
 		username = new JTextField(8);
 		password = new JPasswordField(14);
 		
@@ -85,7 +86,7 @@ public class LoginWindow extends JDialog {
 		center.add(new JLabel("Password:"));
 		center.add(password);
 		center.add(Box.createRigidArea(new Dimension(5,1)));
-		
+		center.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(center, BorderLayout.CENTER);
 		
 		// South Panel
@@ -93,7 +94,7 @@ public class LoginWindow extends JDialog {
 		login = new JButton("Login");
 		
 		south.add(login);
-		
+		south.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(south, BorderLayout.PAGE_END);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 

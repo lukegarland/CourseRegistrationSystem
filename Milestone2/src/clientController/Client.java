@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 /**
  * Main client class.
  * 
- * @author lukeg
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
  *
  */
 public class Client implements MessageTypes

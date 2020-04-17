@@ -1,6 +1,10 @@
+/**
+ * 
+ */
 package clientView;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.*;
@@ -13,18 +17,9 @@ import javax.swing.*;
  * @version 0.1
  *
  */
-public class AddRemoveStudentWindow extends JDialog {
+public class AddCourseOfferingWindow extends JDialog {
 
 	private static final long serialVersionUID = 1L;
-
-	/*
-	 * Text field where user enters the student's name.
-	 */
-	private JTextField studentName;
-	/**
-	 * Label for the studentName text field.
-	 */
-	private JLabel studentNameLabel;
 
 	/*
 	 * Text field where user enters the course name.
@@ -54,46 +49,45 @@ public class AddRemoveStudentWindow extends JDialog {
 	private JLabel courseOfferingLabel;
 
 	/**
-	 * Text area where student's registered courses will appear.
+	 * 
 	 */
-	private JTextArea studentContent;
+	private JTextArea courseContent;
 	/**
-	 * ScrollPane to enable scrolling through studentContent.
+	 * 
 	 */
 	private JScrollPane studentContentScroll;
 
 	/**
-	 * North panel where students name will be requested.
-	 */
-	private JPanel north;
-	/**
-	 * West panel where student's registered courses will appear.
+	 * 
 	 */
 	private JPanel west;
 	/**
-	 * East panel where course name and number to be added/removed will be requested.
+	 * 
 	 */
 	private JPanel east;
 
 	/**
-	 * Button to search for student's courses.
-	 */
-	private JButton submitButton;
-	/**
-	 * Button to add course to student.
+	 * Button to add course to the catalog.
 	 */
 	private JButton addButton;
-	/**
-	 * Button to remove course from student.
-	 */
-	private JButton removeButton;
+
+
+	private JTextField sectionCap;
+
+	private JLabel sectionCapLabel;
+
+	private JLabel topLabel;
+
+	private JPanel north;
+
+	private JLabel contentLabel;
 
 	/**
 	 * Constructs a dialog pane where user can add or remove a course from a student.
 	 * @param owner JFrame which owns the created dialog pane.
 	 */
-	public AddRemoveStudentWindow(MainFrame owner) {
-		this(owner, "Add/remove student");
+	public AddCourseOfferingWindow(MainFrame owner) {
+		this(owner, "Add New Offering");
 	}
 
 	/**
@@ -101,55 +95,34 @@ public class AddRemoveStudentWindow extends JDialog {
 	 * @param owner JFrame which owns the created dialog pane.
 	 * @param title Name of the dialog pane.
 	 */
-	public AddRemoveStudentWindow(MainFrame owner, String title)
+	public AddCourseOfferingWindow(MainFrame owner, String title)
 	{
 		super(owner, title);
 		setLayout(new BorderLayout(10,10));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
-		//North panel
+		//North Panel
 		north = new JPanel();
-		studentNameLabel = new JLabel("Student name or ID:");
-		studentName = new JTextField(20);
-		submitButton = new JButton("Submit");
-
-		north.add(studentNameLabel);
-		north.add(studentName);
-		north.add(submitButton);
+		
+		topLabel = new JLabel("Course List");
+		topLabel.setAlignmentX(LEFT_ALIGNMENT);
+		topLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+		north.add(topLabel);
 		add(north, BorderLayout.NORTH);
-		if(!owner.isAdmin()) {
-			studentName.setEditable(false);
-			studentName.setText(owner.getStudentId());
-			submitButton.doClick();
-			submitPressed();
-		}
-
-		setModalityType(ModalityType.APPLICATION_MODAL);
-		pack();
-	}
-
-	/**
-	 * Populates the remaining of the dialog pane when a students name has been input.
-	 */
-	public void submitPressed() {
-
-		//If submit button was already pressed, don't create more panels.
-		if(west != null) {
-			pack();
-			return;
-		}
-
+		
 		//West Panel
-		west = new JPanel();
-		studentContent = new JTextArea(20,50);
-		studentContentScroll = new JScrollPane(studentContent);
-		studentContent.setEditable(false);
+		west = new JPanel(new GridLayout(0,1));
+		
+		courseContent = new JTextArea(20,50);
+		studentContentScroll = new JScrollPane(courseContent);
+		courseContent.setEditable(false);
+		
 		west.add(studentContentScroll);
+		
 		add(west, BorderLayout.WEST);
 
 		//East Panel
 		east = new JPanel();
-		east.setLayout( new GridLayout(4,2) );
+		east.setLayout( new GridLayout(0,2) );
 		courseName = new JTextField(4);
 		courseNameLabel = new JLabel("Course name:");
 
@@ -159,9 +132,11 @@ public class AddRemoveStudentWindow extends JDialog {
 		courseOffering = new JTextField(4);
 		courseOfferingLabel = new JLabel("Course Offering:");
 
+		sectionCap = new JTextField(4);
+		sectionCapLabel = new JLabel("Section Capacity:");
+
 
 		addButton = new JButton("Add course");
-		removeButton = new JButton("Remove course");
 
 		east.add(courseNameLabel);
 		east.add(courseName);
@@ -171,12 +146,18 @@ public class AddRemoveStudentWindow extends JDialog {
 
 		east.add(courseOfferingLabel);
 		east.add(courseOffering);
+		
+		east.add(sectionCapLabel);
+		east.add(sectionCap);
 
+		east.add(new JLabel(" "));
 		east.add(addButton);
-		east.add(removeButton);
 		add(east, BorderLayout.EAST);
 
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		pack();
+		setVisible(true);
+		
 	}
 
 	/**
@@ -184,40 +165,25 @@ public class AddRemoveStudentWindow extends JDialog {
 	 * @return Array containing the name and number of course in first first and second elements respectively.
 	 */
 	public String[] getCourseInfo() {
-		String[] results = new String[3];
+		String[] results = new String[4];
 		results[0] = courseName.getText();
 		results[1] = courseNumber.getText();
 		results[2] = courseOffering.getText();
+		results[3] = sectionCap.getText();
 		return results;
 	}
 
 	/**
-	 * Writes to the studentContent text area.
+	 * Writes to the courseContent text area.
 	 * @param info String to be written to text area.
 	 */
 	public void writeToStudentContent(String info) {
-		studentContent.setText(info);
-		studentContent.setCaretPosition(0);
-	}
-
-	/**
-	 * Retrieves the string in the studentName text field.
-	 * @return User inputted text in studentName text field.
-	 */
-	public String getStudentName() {
-		return studentName.getText();
-	}
-
-	//Getters and setters
-	public JButton getSubmitButton() {
-		return submitButton;
+		courseContent.setText(info);
+		courseContent.setCaretPosition(0);
 	}
 
 	public JButton getAddButton() {
 		return addButton;
 	}
-
-	public JButton getRemoveButton() {
-		return removeButton;
-	}
 }
+

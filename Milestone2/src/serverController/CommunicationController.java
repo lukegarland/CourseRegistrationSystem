@@ -124,6 +124,10 @@ public class CommunicationController implements Runnable, MessageTypes
 				case MessageTypes.loginStudent:
 					rv = controller.loginStudent(content);
 					break;
+				case MessageTypes.addOffering:
+					rv = controller.addOffering(content);
+					break;
+					
 
 				default: 
 					throw new RegistrationSystemException("Message Communication Error");
