@@ -91,7 +91,6 @@ public class CommunicationController implements Runnable, MessageTypes
 	 * @throws RegistrationSystemException if ModelController throws an exception
 	 */
 	private String actOnMessage(String input) throws RegistrationSystemException {
-		// TODO
 		
 		String [] inputTokens = input.split("\\s+");
 		String type = inputTokens[0];
@@ -118,6 +117,12 @@ public class CommunicationController implements Runnable, MessageTypes
 					break;
 				case MessageTypes.searchStudentCourses:
 					rv = controller.viewStudentCourse(content);
+					break;
+				case MessageTypes.loginAdmin:
+					rv = controller.loginAdmin(content);
+					break;
+				case MessageTypes.loginStudent:
+					rv = controller.loginStudent(content);
 					break;
 
 				default: 

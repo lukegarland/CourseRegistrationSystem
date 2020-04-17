@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Provides methods to query a mySQL database to gather student and course information.
- * @author Luke Garland & Guillaume Raymond-Fauteux
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
  * @version 0.1
  * @since April 16 2020
  *
@@ -24,7 +24,23 @@ public class DBManager implements IDBCredentials{
 	 * List of all students.
 	 */
 	private volatile ArrayList<Student> studentList;
+	/**
+	 * List of all student's login information.
+	 */
+	private volatile ArrayList<String[]> studentLoginList;
+	/**
+	 * List of all admin's login information.
+	 */
+	private volatile ArrayList<String[]> adminLoginList;
+	
+	public synchronized ArrayList<String[]> getAdminLoginList() {
+		return adminLoginList;
+	}
 
+	public synchronized ArrayList<String[]> getStudentLoginList() {
+		return studentLoginList;
+	}
+	
 	public synchronized CourseCatalogue getCatalogue() {
 		return courseList;
 	}
@@ -83,6 +99,57 @@ public class DBManager implements IDBCredentials{
 		}
 		close();
 	}
+	/**
+	 * Reads all students user names and passwords from SQL database 
+	 * and stores in studentLoginList.
+	 */
+	public void loadStudentLoginList(){
+		initializeConnection();
+		studentLoginList = new ArrayList<String[]>();
+		
+		try {
+			String query = "select username, password from mydb.student";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				String[] loginInfo = new String[2];
+				loginInfo[0] = rs.getString("username");
+				loginInfo[1] = rs.getString("password");
+				studentLoginList.add(loginInfo);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("Problem selecting student");
+			e.printStackTrace();
+		}
+		close();
+	}
+	
+	/**
+	 * Reads all admin's user names and passwords from SQL database 
+	 * and stores in adminLoginList.
+	 */
+	public void loadAdminLoginList(){
+		initializeConnection();
+		adminLoginList = new ArrayList<String[]>();
+		
+		try {
+			String query = "select username, password from mydb.admin";
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				String[] loginInfo = new String[2];
+				loginInfo[0] = rs.getString("username");
+				loginInfo[1] = rs.getString("password");
+				adminLoginList.add(loginInfo);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			System.err.println("Problem selecting admin");
+			e.printStackTrace();
+		}
+		close();
+	}
 	
 	/**
 	 * Reads all courses from SQL database and stores in courseList.
@@ -121,6 +188,8 @@ public class DBManager implements IDBCredentials{
 		this.courseList.setCourseList(courseList);
 		close();
 	}
+	
+	
 
 	
 	
@@ -128,7 +197,7 @@ public class DBManager implements IDBCredentials{
 	
 	public void createStudentTable() {
 		String sql = "CREATE TABLE STUDENT " + "(id INTEGER not NULL, " + " name VARCHAR(255), "
-				+ " PRIMARY KEY ( id ))";
+				+ " username VARCHAR(255), " + " password VARCHAR(255), " + " PRIMARY KEY ( id ))";
 
 		try {
 			Statement stmt = conn.createStatement(); // construct a statement
@@ -142,25 +211,27 @@ public class DBManager implements IDBCredentials{
 	}
 	
 	public void populateStudentTable() {
-		insertUser(1, "Guillaume");
-		insertUser(2, "Aidan");
-		insertUser(3, "Michele");
-		insertUser(4, "Dylan");
-		insertUser(5, "Tyler");
-		insertUser(6, "Hailey");
-		insertUser(7, "Sadie");
-		insertUser(8, "Luke");
-		insertUser(9, "Cam");
-		insertUser(17, "Taylor");
-		insertUser(42, "Mike");
+		insertUser(1, "Guillaume", "Guillaume1", "password1");
+		insertUser(2, "Aidan", "Aidan2", "password2");
+		insertUser(3, "Michele", "Michele3", "password3");
+		insertUser(4, "Dylan", "Dylan4", "password4");
+		insertUser(5, "Tyler", "Tyler5", "password5");
+		insertUser(6, "Hailey", "Hailey6", "password6");
+		insertUser(7, "Sadie", "Sadie7", "password7");
+		insertUser(8, "Luke", "Luke8", "password8");
+		insertUser(9, "Cam", "Cam9", "password9");
+		insertUser(17, "Taylor", "Taylor7", "password17");
+		insertUser(42, "Mike", "Mike42", "password42");
 	}
 	
-	public void insertUser(int id, String name) {
+	public void insertUser(int id, String name, String username, String password) {
 		try {
-			String query = "INSERT INTO STUDENT (ID,name) values(?,?)";
+			String query = "INSERT INTO STUDENT (ID,name,username,password) values(?,?,?,?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
 			pStat.setInt(1, id);
 			pStat.setString(2, name);
+			pStat.setString(3, username);
+			pStat.setString(4, password);
 			pStat.executeUpdate();
 			pStat.close();
 		} catch (SQLException e) {
@@ -214,6 +285,42 @@ public class DBManager implements IDBCredentials{
 			e.printStackTrace();
 		}
 	}
+	
+	public void createAdminTable() {
+		String sql = "CREATE TABLE ADMIN " +  "(id INTEGER not NULL, " +
+				" username VARCHAR(255), " + 
+				" password VARCHAR(255), " + " PRIMARY KEY ( id ))";
+
+		try {
+			Statement stmt = conn.createStatement(); // construct a statement
+			stmt.executeUpdate(sql); // execute my query (i.e. sql)
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Table can NOT be created!");
+		}
+		System.out.println("Created admin table in given database...");
+	}
+	
+	public void populateAdminTable() {
+		insertAdmin(1, "admin","12345");
+		insertAdmin(2, "adminTest","SecurePassword");
+	}
+	
+	public void insertAdmin(int id, String username, String password) {
+		try {
+			String query = "INSERT INTO ADMIN (id,username,password) values(?,?,?)";
+			PreparedStatement pStat = conn.prepareStatement(query);
+			pStat.setInt(1, id);
+			pStat.setString(2, username);
+			pStat.setString(3, password);
+			pStat.executeUpdate();
+			pStat.close();
+		} catch (SQLException e) {
+			System.out.println("Problem inserting course");
+			e.printStackTrace();
+		}
+	}
 
 //Run main to init and populate DB on local system
 	public static void main(String[] args0) {
@@ -221,9 +328,13 @@ public class DBManager implements IDBCredentials{
 		init.initializeConnection();
 		init.createStudentTable();
 		init.createCourseTable();
+		init.createAdminTable();
 		init.populateStudentTable();
 		init.populateCourseTable();
+		init.populateAdminTable();
 		init.close();
 	}
+
+	
 
 }

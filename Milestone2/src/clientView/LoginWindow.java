@@ -1,16 +1,16 @@
 package clientView;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 /**
  * Not used for Milestone 2.
@@ -22,11 +22,16 @@ public class LoginWindow extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	 
+	//private JButton returnToMain;
+	private JButton login;
 	
-	private JButton returnToMain;
+	private JTextField username;
+	private JPasswordField password;
 	
-	private JTextField id;
-	private JTextField password;
+	private JRadioButton admin;
+	private JRadioButton student;
+	
 	private JPanel north;
 	private JPanel center;
 	private JPanel south;
@@ -42,17 +47,27 @@ public class LoginWindow extends JDialog {
 		// North Panel
 		north = new JPanel();
 		topLabel = new JLabel("Please Login with your Username and Password.");
+		
+		student = new JRadioButton("Student", true);
+		admin = new JRadioButton("Admin");
+		
+		ButtonGroup bg = new ButtonGroup(); 
+		bg.add(student);
+		bg.add(admin);
+		
+		north.add(student);
+		north.add(admin);
 		north.add(topLabel);
 		add(north, BorderLayout.NORTH);
 		
 		
 		// Center Panel
 		center = new JPanel();
-		id = new JTextField(8);
-		password = new JTextField(14);
+		username = new JTextField(8);
+		password = new JPasswordField(14);
 		
-		center.add(new JLabel("Student Username or ID:"));
-		center.add(id);
+		center.add(new JLabel("Student Username:"));
+		center.add(username);
 
 		center.add(new JLabel("Password:"));
 		center.add(password);
@@ -62,32 +77,31 @@ public class LoginWindow extends JDialog {
 		
 		// South Panel
 		south = new JPanel();
-		JButton login = new JButton("Login");
-		login.addActionListener(new LoginListener());
+		login = new JButton("Login");
 		
 		south.add(login);
 		
 		add(south, BorderLayout.SOUTH);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		pack();
-		setVisible(true);
-		
 
 	}
 
-	/**
-	 * TODO for now it goes to main menu
-	 *
-	 */
-	class LoginListener implements ActionListener
-	{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JDialog i = (JDialog) SwingUtilities.getRoot((JButton)e.getSource());
-			i.setVisible(false); // Close
-		}
-		
+	public JButton getLoginButton() {
+		return login;
+	}
+	public String getUsername() {
+		return username.getText();
+	}
+	public String getPassword() {
+		return String.valueOf(password.getPassword());
 	}
 
+	public void displayError(String message) {
+		JOptionPane.showMessageDialog(this, message);
+	}
+
+	public boolean isStudent() {
+		return student.isSelected();
+	}
+	
 }

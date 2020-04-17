@@ -211,5 +211,28 @@ public class ModelController {
 		return "Course not found";
 	}
 
+	public String loginAdmin(String[] content) {
+		db.loadAdminLoginList();
+		for(String[] s : db.getAdminLoginList())
+		{
+			System.out.println(content[0] + content[1] + s[0] + s[1]);
+			if(s[0].equals(content[0]) && s[1].equals(content[1]))
+				return "admin";
+		}
+		return null;
+	}
+
+
+
+	public String loginStudent(String[] content) {
+		db.loadStudentLoginList();
+		for(String[] s : db.getStudentLoginList())
+		{
+			if(s[0].equals(content[0]) && s[1].equals(content[1]))
+				return "student";
+		}
+		return null;
+	}
+
 	
 }

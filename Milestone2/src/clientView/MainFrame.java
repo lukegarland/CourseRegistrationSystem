@@ -13,6 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+
 /**
  * Main window of the GUI.
  * 
@@ -76,13 +77,11 @@ public class MainFrame extends JFrame {
 	 * Scroll pane for the center panel
 	 */
 	private JScrollPane scrollPane;
-	
+
 	/**
 	 * @throws HeadlessException
 	 */
 	public MainFrame() throws HeadlessException {
-		//Future work
-		//LoginWindow temp = new LoginWindow(this, "Login Window");
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -93,47 +92,57 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		//Initializing the Panels
-		topButtonPanel = new JPanel();
-		bottomButtonPanel = new JPanel();
-		topPanel = new JPanel();
-		centerPanel = new JPanel();
-		
-		//Initializing the individual components
-		topLabel = new JLabel("Main Window");
-		
-		catalogueContent = new JTextArea(20,50);
-		catalogueContent.setEditable(false);
-		catalogueContent.setFont(new Font("Comic Sans MS", Font.PLAIN,10));
-		scrollPane = new JScrollPane(catalogueContent);
-		
 		showCatalogue = new JButton("Show Catalogue");
 		addRemove = new JButton("Add or Remove a Course");
 		viewStudentRegs = new JButton("View Student Registrations");
 		searchCatalogue = new JButton("Search Through Catalogue");
 		
+		//Sets the size and visibility
+		pack();
+
+		setVisible(false);
+
+
+	}
+	public MainFrame(String isAdmin) {
+		//TODO
+		//Initializing the Panels
+		topButtonPanel = new JPanel();
+		bottomButtonPanel = new JPanel();
+		topPanel = new JPanel();
+		centerPanel = new JPanel();
+
+		//Initializing the individual components
+		topLabel = new JLabel("Main Window");
+
+		catalogueContent = new JTextArea(20,50);
+		catalogueContent.setEditable(false);
+		catalogueContent.setFont(new Font("Comic Sans MS", Font.PLAIN,10));
+		scrollPane = new JScrollPane(catalogueContent);
+
+		showCatalogue = new JButton("Show Catalogue");
+		addRemove = new JButton("Add or Remove a Course");
+		viewStudentRegs = new JButton("View Student Registrations");
+		searchCatalogue = new JButton("Search Through Catalogue");
+
 		//Adding the components to their final panels
 		topPanel.add(topLabel);
 		topButtonPanel.add(showCatalogue);
 		topButtonPanel.add(addRemove);
-		
+
 		bottomButtonPanel.add(viewStudentRegs);
 		bottomButtonPanel.add(searchCatalogue);
-		
+
 		centerPanel.add(scrollPane);
-		
+
 		topButtonPanel.add(bottomButtonPanel);
-		
+
 		//Adding the panels to the JFrame in the desired location
 		add(topPanel, BorderLayout.NORTH);
 		add(topButtonPanel, BorderLayout.SOUTH);
 		add(centerPanel, BorderLayout.CENTER);
-		
-		//Sets the size and visibility
 		pack();
 		setVisible(true);
-		
-		
 	}
 	/**
 	 * Sets the text to the String given by content
@@ -148,17 +157,20 @@ public class MainFrame extends JFrame {
 	public JButton getAddRemove() {
 		return addRemove;
 	}
-	
+
 	public JButton getSearchCatalogue() {
 		return searchCatalogue;
 	}
-	
+
 	public JButton getViewStudentRegs() {
 		return viewStudentRegs;
 	}
 	public JButton getShowCatalogue() {
 		return showCatalogue;
 	}
-	
+	public static void main(String[] args) {
+
+		MainFrame test = new MainFrame();		
+	}
 
 }

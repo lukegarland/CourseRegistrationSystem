@@ -8,7 +8,7 @@ import common.*;
 /**
  * Responsible for creating and managing all listeners for all GUI interactions.
  * This is effectively the GUI Controller
- * @author Guillaume Raymond-Fauteux
+ * @author C. Faith, Guillaume Raymond-Fauteux
  * @since April 10 2020
  * @version 1.0
  *
@@ -17,7 +17,7 @@ public class Listeners
 {
 
 	/**
-	 * The primary Jrame which contains all buttons to access sub menus.
+	 * The primary JFrame which contains all buttons to access sub menus.
 	 */
 	private MainFrame mainFrame;
 	/**
@@ -34,6 +34,7 @@ public class Listeners
 	{
 		this(m);
 		client = c;
+		loginToServer();
 	}
 	
 	/**
@@ -61,6 +62,8 @@ public class Listeners
 		mainFrame.getViewStudentRegs().addActionListener((ActionEvent eee) -> {
 			searchStudentDialog();
 		});
+		
+		
 	}
 	
 	/**
@@ -166,6 +169,29 @@ public class Listeners
 		
 		searchStudentDialog.setVisible(true);
 		searchStudentDialog.pack();
+	}
+	private void loginToServer() {
+		LoginWindow loginDialog = new LoginWindow(mainFrame, "Login Window");
+			loginDialog.getLoginButton().addActionListener((ActionEvent e) -> {
+			
+			
+			String results = loginDialog.getUsername() + " " + loginDialog.getPassword();
+			String r1;
+			if(loginDialog.isStudent()) 
+				r1 = client.communicate(MessageTypes.loginStudent, results);
+			else
+				r1 = client.communicate(MessageTypes.loginAdmin, results);
+			if(r1 != null) {
+				System.out.println(r1);
+				loginDialog.setVisible(false);
+				mainFrame = new MainFrame(r1);
+			} else
+				loginDialog.displayError("Invalid username or password. Please try again.");
+
+		});
+			loginDialog.pack();
+			loginDialog.setVisible(true);
+			
 	}
 
 
