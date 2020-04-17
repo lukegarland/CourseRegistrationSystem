@@ -1,4 +1,11 @@
 package serverModel;
+/**
+ * Provides data fields used to gain access to SQL database.
+ * @author Guillaume Raymond-Fauteux
+ * @version 0.0
+ * @since April 16 2020
+ *
+ */
 public interface IDBCredentials {
 	
 	// JDBC driver name and database URL
