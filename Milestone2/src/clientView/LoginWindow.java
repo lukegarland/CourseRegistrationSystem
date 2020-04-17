@@ -1,6 +1,12 @@
 package clientView;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -45,33 +51,40 @@ public class LoginWindow extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);			
 		
 		// North Panel
-		north = new JPanel();
+		north = new JPanel(new GridLayout(0,1,10,5));
+		
 		topLabel = new JLabel("Please Login with your Username and Password.");
+		topLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 		
 		student = new JRadioButton("Student", true);
+		student.setAlignmentX(CENTER_ALIGNMENT);
 		admin = new JRadioButton("Admin");
+		admin.setAlignmentX(CENTER_ALIGNMENT);
 		
 		ButtonGroup bg = new ButtonGroup(); 
 		bg.add(student);
 		bg.add(admin);
 		
+		north.add(topLabel);
+		north.add(Box.createVerticalGlue());
 		north.add(student);
 		north.add(admin);
-		north.add(topLabel);
+		north.add(Box.createVerticalGlue());
+		north.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(north, BorderLayout.NORTH);
 		
 		
 		// Center Panel
-		center = new JPanel();
+		center = new JPanel(new GridLayout(0,2,5,5));
 		username = new JTextField(8);
 		password = new JPasswordField(14);
 		
-		center.add(new JLabel("Student Username:"));
+		center.add(new JLabel("Username:"));
 		center.add(username);
 
 		center.add(new JLabel("Password:"));
 		center.add(password);
-
+		center.add(Box.createRigidArea(new Dimension(5,1)));
 		
 		add(center, BorderLayout.CENTER);
 		
@@ -81,7 +94,7 @@ public class LoginWindow extends JDialog {
 		
 		south.add(login);
 		
-		add(south, BorderLayout.SOUTH);
+		add(south, BorderLayout.PAGE_END);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
 	}

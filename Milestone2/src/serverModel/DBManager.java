@@ -108,13 +108,14 @@ public class DBManager implements IDBCredentials{
 		studentLoginList = new ArrayList<String[]>();
 		
 		try {
-			String query = "select username, password from mydb.student";
+			String query = "select username, password, id from mydb.student";
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()) {
-				String[] loginInfo = new String[2];
+				String[] loginInfo = new String[3];
 				loginInfo[0] = rs.getString("username");
 				loginInfo[1] = rs.getString("password");
+				loginInfo[2] = Integer.toString(rs.getInt("id"));
 				studentLoginList.add(loginInfo);
 			}
 			stmt.close();

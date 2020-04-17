@@ -2,6 +2,7 @@ package clientView;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 
 import javax.swing.JButton;
@@ -58,13 +59,21 @@ public class MainFrame extends JFrame {
 	 */
 	private JButton searchCatalogue;
 	/**
+	 * Button used to add a new course offering in admin mode
+	 */
+	private JButton addOffering;
+	/**
 	 * Panel contains the first two buttons
 	 */
 	private JPanel topButtonPanel;
 	/**
-	 * Panel containing the last two buttons
+	 * Panel containing the last three buttons
 	 */
 	private JPanel bottomButtonPanel;
+	/**
+	 * Panel containing all buttons
+	 */
+	private JPanel buttonPanel;
 	/**
 	 * Panel containing the center text 
 	 */
@@ -77,6 +86,15 @@ public class MainFrame extends JFrame {
 	 * Scroll pane for the center panel
 	 */
 	private JScrollPane scrollPane;
+	/**
+	 * Controls whether the MainFrame is launched in admin or student mode
+	 */
+	private boolean isAdmin;
+	/**
+	 * Id of the student if launched in student mode
+	 */
+	private int studentId;
+	
 
 	/**
 	 * @throws HeadlessException
@@ -92,10 +110,6 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		showCatalogue = new JButton("Show Catalogue");
-		addRemove = new JButton("Add or Remove a Course");
-		viewStudentRegs = new JButton("View Student Registrations");
-		searchCatalogue = new JButton("Search Through Catalogue");
 		
 		//Sets the size and visibility
 		pack();
@@ -104,16 +118,37 @@ public class MainFrame extends JFrame {
 
 
 	}
-	public MainFrame(String isAdmin) {
-		//TODO
+	public MainFrame(String message) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+		setLayout(new BorderLayout());
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		//Setting up whether mainFrame is in admin or student mode 
+		String [] content = message.split("\\s+");
+		if(content[0].equals("admin"))
+			isAdmin = true;
+		else {
+			isAdmin = false;
+			studentId = Integer.parseInt(content[1]);
+		}
+				
 		//Initializing the Panels
 		topButtonPanel = new JPanel();
 		bottomButtonPanel = new JPanel();
 		topPanel = new JPanel();
 		centerPanel = new JPanel();
-
+		
+		
 		//Initializing the individual components
-		topLabel = new JLabel("Main Window");
+		if(isAdmin)
+			topLabel = new JLabel("Welcome to the Admin Registration System");
+		else
+			topLabel = new JLabel("Welcome to the Student Registration System");
 
 		catalogueContent = new JTextArea(20,50);
 		catalogueContent.setEditable(false);
@@ -124,6 +159,8 @@ public class MainFrame extends JFrame {
 		addRemove = new JButton("Add or Remove a Course");
 		viewStudentRegs = new JButton("View Student Registrations");
 		searchCatalogue = new JButton("Search Through Catalogue");
+		if(isAdmin)
+			addOffering = new JButton("Add New Course Offering");
 
 		//Adding the components to their final panels
 		topPanel.add(topLabel);
@@ -132,15 +169,21 @@ public class MainFrame extends JFrame {
 
 		bottomButtonPanel.add(viewStudentRegs);
 		bottomButtonPanel.add(searchCatalogue);
+		
+		if(isAdmin)
+			bottomButtonPanel.add(addOffering);
 
 		centerPanel.add(scrollPane);
-
-		topButtonPanel.add(bottomButtonPanel);
+		
+		GridLayout allButtons = new GridLayout(2,3);
+		buttonPanel = new JPanel(allButtons);
+		buttonPanel.add(topButtonPanel);
+		buttonPanel.add(bottomButtonPanel);
 
 		//Adding the panels to the JFrame in the desired location
 		add(topPanel, BorderLayout.NORTH);
-		add(topButtonPanel, BorderLayout.SOUTH);
-		add(centerPanel, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.SOUTH);
+		
 		pack();
 		setVisible(true);
 	}
@@ -150,9 +193,12 @@ public class MainFrame extends JFrame {
 	 */
 	public void fillCatalogueContent(String content)
 	{
+		add(centerPanel, BorderLayout.CENTER);
 		catalogueContent.setText(content);
 		catalogueContent.setCaretPosition(0); //Scroll to top
+		pack();
 	}
+	
 	/***GETTERS AND SETTERS***/
 	public JButton getAddRemove() {
 		return addRemove;
@@ -168,9 +214,23 @@ public class MainFrame extends JFrame {
 	public JButton getShowCatalogue() {
 		return showCatalogue;
 	}
-	public static void main(String[] args) {
-
-		MainFrame test = new MainFrame();		
+	/**
+	 * @return the isAdmin
+	 */
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+	/**
+	 * @return the studentId
+	 */
+	public int getStudentId() {
+		return studentId;
+	}
+	/**
+	 * @return the addOffering
+	 */
+	public JButton getAddOffering() {
+		return addOffering;
 	}
 
 }

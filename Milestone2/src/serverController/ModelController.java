@@ -222,14 +222,12 @@ public class ModelController {
 		return null;
 	}
 
-
-
 	public String loginStudent(String[] content) {
 		db.loadStudentLoginList();
 		for(String[] s : db.getStudentLoginList())
 		{
 			if(s[0].equals(content[0]) && s[1].equals(content[1]))
-				return "student";
+				return "student" + " " + s[2];
 		}
 		return null;
 	}

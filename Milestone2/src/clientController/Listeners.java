@@ -32,18 +32,9 @@ public class Listeners
 	 */
 	public Listeners(Client c, MainFrame m)
 	{
-		this(m);
+		mainFrame = m;
 		client = c;
 		loginToServer();
-	}
-	
-	/**
-	 * Constructs a listener which keeps track of all user interaction with the GUI.
-	 * @param m the main JFrame from which GUI system is rooted.
-	 */
-	private Listeners(MainFrame m)
-	{
-		mainFrame = m;
 		
 		mainFrame.getShowCatalogue().addActionListener((ActionEvent e) -> {
 			String response = client.communicate(MessageTypes.getCatalogue, "");
@@ -62,9 +53,8 @@ public class Listeners
 		mainFrame.getViewStudentRegs().addActionListener((ActionEvent eee) -> {
 			searchStudentDialog();
 		});
-		
-		
 	}
+	
 	
 	/**
 	 * Creates the add/remove student pop-up window and assigns appropriate listeners.
@@ -182,7 +172,6 @@ public class Listeners
 			else
 				r1 = client.communicate(MessageTypes.loginAdmin, results);
 			if(r1 != null) {
-				System.out.println(r1);
 				loginDialog.setVisible(false);
 				mainFrame = new MainFrame(r1);
 			} else
