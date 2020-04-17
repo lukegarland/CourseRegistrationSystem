@@ -2,12 +2,27 @@ package serverModel;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Provides methods to query a mySQL database to gather student and course information.
+ * @author Luke Garland & Guillaume Raymond-Fauteux
+ * @version 0.1
+ * @since April 16 2020
+ *
+ */
 public class DBManager implements IDBCredentials{
 	
-	// Attributes
+	/**
+	 * Serves as the connection to SQL database.
+	 */
 	private Connection conn;
 	
+	/**
+	 * List of the various courses.
+	 */
 	private volatile CourseCatalogue courseList;
+	/**
+	 * List of all students.
+	 */
 	private volatile ArrayList<Student> studentList;
 
 	public synchronized CourseCatalogue getCatalogue() {
@@ -18,6 +33,9 @@ public class DBManager implements IDBCredentials{
 		return studentList;
 	}
 	
+	/**
+	 * Opens the connection to the SQL database.
+	 */
 	public void initializeConnection() {
 		try {
 			// Register JDBC driver
@@ -31,6 +49,9 @@ public class DBManager implements IDBCredentials{
 		}
 	}
 
+	/**
+	 * Closes the connection to SQL database.
+	 */
 	public void close() {
 		try {
 			conn.close();
@@ -39,6 +60,9 @@ public class DBManager implements IDBCredentials{
 		}
 	}
 	
+	/**
+	 * Reads all students from SQL database and stores in studentList.
+	 */
 	public void loadStudentList(){
 		initializeConnection();
 		studentList = new ArrayList<Student>();
@@ -60,6 +84,9 @@ public class DBManager implements IDBCredentials{
 		close();
 	}
 	
+	/**
+	 * Reads all courses from SQL database and stores in courseList.
+	 */
 	public void loadCourseList() {
 		initializeConnection();
 		ArrayList<Course> courseList = new ArrayList<Course>();
@@ -185,37 +212,6 @@ public class DBManager implements IDBCredentials{
 		} catch (SQLException e) {
 			System.out.println("Problem inserting course");
 			e.printStackTrace();
-		}
-	}
-	
-	public void doAThing() {
-		try {
-			String query = "select id, name from mydb.student";
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()) {
-				int id = rs.getInt("id");
-				String name = rs.getString("name");
-				System.out.println(id + " " + name);
-			}
-			stmt.close();
-		} catch (SQLException e) {
-			System.out.println("problem inserting user");
-			e.printStackTrace();
-		}
-	}
-	
-	public void addColumn() {
-		String sql = "ALTER TABLE student ADD last_name VARCHAR(40)";
-		
-		try {
-			Statement stmt = conn.createStatement(); // construct a statement
-			stmt.executeUpdate(sql); // execute my query (i.e. sql)
-			stmt.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("problem with adding a column");
 		}
 	}
 
