@@ -196,7 +196,7 @@ public class DBManager implements IDBCredentials{
 		insertCourse(8,"PHYS", 259, 0, 66, 1, 42 );
 	}
 	
-	public void insertCourse(int id, String name, int num, int off1, int off1cap, int off2, int off2cap ) {
+	public void insertCourse(int id, String name, int num, int off1, int off1cap, int off2, int off2cap) {
 		try {
 			String query = "INSERT INTO COURSE (id,name,num,off1,off1cap,off2,off2cap) values(?,?,?,?,?,?,?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
