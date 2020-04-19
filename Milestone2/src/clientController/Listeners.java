@@ -6,11 +6,13 @@ import javax.swing.JOptionPane;
 import clientView.*;
 import common.*;
 /**
- * Responsible for creating and managing all listeners for all GUI interactions.
- * This is effectively the GUI Controller
- * @author C. Faith, Guillaume Raymond-Fauteux
- * @since April 10 2020
- * @version 1.0
+ * Controller responsible for creating and managing all listeners for all GUI interactions.
+ * This is effectively the GUI Controller in our MVC design. The controller also manages
+ * the dialog pop-up menus and their listeners.
+ * 
+ * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class Listeners 
@@ -27,6 +29,9 @@ public class Listeners
 	
 	/**
 	 * Constructs a listener which keeps track of all user interaction with the GUI.
+	 * The user is asked to first login and then the mainframe is setup according to 
+	 * the user's clearance level.
+	 * 
 	 * @param c The client from which messages may be sent and received from server.
 	 * @param m the main JFrame from which GUI system is rooted.
 	 */
@@ -58,7 +63,10 @@ public class Listeners
 		});
 	}
 	
-	
+	/**
+	 * Creates the add course pop-up window and assigns appropriate listeners.
+	 * Only used in the admin view of the mainFrame
+	 */
 	private void addOffering() {
 		
 		AddCourseOfferingWindow addOfferingDialog = new AddCourseOfferingWindow(mainFrame);
@@ -190,6 +198,9 @@ public class Listeners
 		searchStudentDialog.setVisible(true);
 		searchStudentDialog.pack();
 	}
+	/**
+	 * Creates the admin/student login pop-up window and assigns appropriate listeners.
+	 */
 	private void loginToServer() {
 		LoginWindow loginDialog = new LoginWindow(mainFrame, "Login Window");
 			loginDialog.getLoginButton().addActionListener((ActionEvent e) -> {

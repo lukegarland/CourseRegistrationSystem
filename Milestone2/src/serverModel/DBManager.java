@@ -75,7 +75,7 @@ public class DBManager implements IDBCredentials{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Reads all students from SQL database and stores in studentList.
 	 */
@@ -220,7 +220,7 @@ public class DBManager implements IDBCredentials{
 		insertUser(7, "Sadie", "Sadie7", "password7");
 		insertUser(8, "Luke", "Luke8", "password8");
 		insertUser(9, "Cam", "Cam9", "password9");
-		insertUser(17, "Taylor", "Taylor7", "password17");
+		insertUser(17, "Taylor", "Taylor17", "password17");
 		insertUser(42, "Mike", "Mike42", "password42");
 	}
 	

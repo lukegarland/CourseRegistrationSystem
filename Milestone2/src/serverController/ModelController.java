@@ -230,8 +230,6 @@ public class ModelController {
 		return null;
 	}
 
-
-
 	public String addOffering(String[] content) {
 		String courseName = content[0];
 		String courseNum = content[1];
