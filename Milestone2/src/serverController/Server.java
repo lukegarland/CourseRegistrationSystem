@@ -8,23 +8,31 @@ import java.util.concurrent.Executors;
 import serverModel.DBManager;
 
 /**
- * Main server class. 
+ * Server class responsible for communicating with the clients.
+ * 
+ * Server is responsible for connecting to the client and initializing 
+ * a new communication controller to communicate with the client.
+ * The server is opened to port 8099.
  * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class Server {
 
-	
+	/**
+	 * Database of the course registration system.
+	 */
 	private DBManager db;
-	
+	/**
+	 * ServerSocket used to connect to the port
+	 */
 	private ServerSocket serverSocket;
-
+	/**
+	 * Used for multi-client support.
+	 */
 	private ExecutorService pool;
-	
-	
-	
-	
 	/**
 	 * Constructor for server.
 	 * @param port Port number of client
@@ -73,14 +81,12 @@ public class Server {
 	}
 	
 	/**
-	 * Starts the server
+	 * Starts the server opened to port 8099.
 	 * @param args not used.
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Server server = new Server(8099);
 		server.communicateWithClient();
-		
 	}
 
 }

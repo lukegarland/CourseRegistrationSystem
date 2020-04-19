@@ -10,21 +10,33 @@ import common.*;
 import serverModel.*;
 
 /**
+ * Controller that directly communicates with the client. 
  * 
- * This is the class that will directly communicate with the client. It will create and parse messages to and from 
+ * The controller will create and parse messages to and from 
  * the socket and invoke ModelController's methods to manipulate the database
  * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * @since April 19, 2020
+ * @version 1.1
  *
  */
 public class CommunicationController implements Runnable, MessageTypes
 {
-
+	/**
+	 * Controller for the server.
+	 */
 	private ModelController controller;
+	/**
+	 * Object reader for the socket input stream.
+	 */
 	private ObjectInputStream messageInputStream;
+	/**
+	 * Object reader for the socket output stream.
+	 */
 	private ObjectOutputStream messageOutputStream;
 
 	/**
+	 * Constructs a CommunicationController with values given by the parameters s and db.
 	 * @param s Socket
 	 * @param db Reference to the database
 	 */
@@ -45,7 +57,7 @@ public class CommunicationController implements Runnable, MessageTypes
 	}
 	
 	/**
-	 * Main runnable class to receive and send messages
+	 * Main runnable class to receive and send messages to the client.
 	 */
 	@Override
 	public void run() 
@@ -74,7 +86,7 @@ public class CommunicationController implements Runnable, MessageTypes
 				}
 
 				messageOutputStream.reset();
-				messageOutputStream.writeObject(new Message(responseType, response)); //TODO: check for error response?
+				messageOutputStream.writeObject(new Message(responseType, response)); 
 			} 
 		}
 		catch (ClassNotFoundException | IOException e) 
@@ -86,6 +98,8 @@ public class CommunicationController implements Runnable, MessageTypes
 	}
 
 	/**
+	 * Takes the Client message given by input and calls the required controller methods.
+	 * 
 	 * @param input Content of a message from the Client
 	 * @return Message content to send back to the client
 	 * @throws RegistrationSystemException if ModelController throws an exception

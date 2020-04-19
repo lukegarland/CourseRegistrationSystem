@@ -7,15 +7,25 @@ import serverModel.Registration;
 import serverModel.Student;
 
 /**
- * Controller for the model. Communication controller will call this object's  methods in order to interface with the model/database.
+ * Controller for the server model. 
+ * 
+ * Communication controller will call this object's  methods in order to interface with the model and database.
+ * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class ModelController {
 
-
+	/**
+	 * Database of the course registration system.
+	 */
 	private DBManager db;
-
+	/**
+	 * Creates a Model controller with a database given by db.
+	 * @param db Database of the controller
+	 */
 	public ModelController(DBManager db) {
 		this.db = db;
 	}
@@ -45,7 +55,7 @@ public class ModelController {
 	}
 
 	/**
-	 * 
+	 * Search for a student's course list
 	 * @param query Search key (Student id or name)
 	 * @return the appropriate Student object. Null if not found
 	 */
@@ -79,6 +89,7 @@ public class ModelController {
 
 
 	/**
+	 * Gets the current course catalogue.
 	 * @return the course catalog in a formatted string
 	 */
 	protected String viewCatalogue() 
@@ -88,7 +99,7 @@ public class ModelController {
 	}
 
 	/**
-	 * Remove a student from a course
+	 * Removes a student from a course
 	 * @param content Format {"id or name", "Course name", "Course Number"}
 	 * @return "Removed student from course!" if successful
 	 * @throws RegistrationSystemException if student or course is not found
@@ -127,7 +138,7 @@ public class ModelController {
 	}
 
 	/**
-	 * Add a student from a course
+	 * Adds a student from a course
 	 * @param content Format {"id or name", "Course name", "Course Number", "Section Number"}
 	 * @return "Added student to course!" if successful
 	 * @throws RegistrationSystemException if student or course is not found
@@ -167,6 +178,7 @@ public class ModelController {
 	}
 
 	/**
+	 * Searches for a course in the catalogue.
 	 * @param Format: {"Course name", "Course Number"}
 	 * @return Formatted string of the offering details of the course
 	 * @throws RegistrationSystemException if course is not found
@@ -187,29 +199,45 @@ public class ModelController {
 		return c.toString();
 
 	}
-
+	/**
+	 * Error to return if the input is invalid.
+	 * @return "Error: Invalid input"
+	 */
 	protected static String invalidInputError()
 	{
 		return "Error: Invalid input";
 
 	}
-
+	/**
+	 * Error to return if an offering isn't found.
+	 * @return "Error: Offering does not exist"
+	 */
 	protected static String offeringDoesNotExistError() 
 	{
 		return "Error: Offering does not exist";
 	}
 
-
+	/**
+	 * Error to return if a student isn't found.
+	 * @return "Error: Student not found"
+	 */
 	protected static String studentNotFoundError()
 	{
 		return "Error: Student not found";
 	}
-
+	/**
+	 * Error to return if a course isn't found.
+	 * @return "Course not found"
+	 */
 	protected static String courseNotFoundError()
 	{
 		return "Course not found";
 	}
-
+	/**
+	 * Checks to see if the login information provided matches an admin in the database.
+	 * @param content login information
+	 * @return admin if found, otherwise null
+	 */
 	public String loginAdmin(String[] content) {
 		db.loadAdminLoginList();
 		for(String[] s : db.getAdminLoginList())
@@ -219,7 +247,11 @@ public class ModelController {
 		}
 		return null;
 	}
-
+	/**
+	 * Checks to see if the login information provided matches a student in the database.
+	 * @param content login information
+	 * @return student + their id if found, otherwise null
+	 */
 	public String loginStudent(String[] content) {
 		db.loadStudentLoginList();
 		for(String[] s : db.getStudentLoginList())
@@ -229,7 +261,11 @@ public class ModelController {
 		}
 		return null;
 	}
-
+	/**
+	 * Adds a new course offering. Only available to admin users.
+	 * @param content Course name, number, offering number, and capacity
+	 * @return Response of the attempt to add an offering.
+	 */
 	public String addOffering(String[] content) {
 		String courseName = content[0];
 		String courseNum = content[1];
