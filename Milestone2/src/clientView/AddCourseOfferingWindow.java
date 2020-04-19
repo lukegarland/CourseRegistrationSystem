@@ -10,17 +10,22 @@ import java.awt.GridLayout;
 import javax.swing.*;
 
 /**
- * Provides the member variables and methods required for the creation of and interaction with the add/remove student
- * from course pop-up window.
+ * The dialog window of the admin GUI to add a course offering.
+ * 
+ * Provides the member variables and methods required for the creation of and interaction with the add course
+ * offering pop-up window. The user can add to the course catalogue as well as view the current course 
+ * list of the catalogue.
+ * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
- * @since April 10 2020
- * @version 0.1
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class AddCourseOfferingWindow extends JDialog {
-
+	/**
+	 * Default not used.
+	 */
 	private static final long serialVersionUID = 1L;
-
 	/*
 	 * Text field where user enters the course name.
 	 */
@@ -29,7 +34,6 @@ public class AddCourseOfferingWindow extends JDialog {
 	 * Label for the courseName text field.
 	 */
 	private JLabel courseNameLabel;
-
 	/**
 	 * Text field where user enters the course number.
 	 */
@@ -38,54 +42,57 @@ public class AddCourseOfferingWindow extends JDialog {
 	 * Label for the courseNumber text field.
 	 */
 	private JLabel courseNumberLabel;
-
 	/**
-	 * Text field where user enters the courser offering number.
+	 * Text field where user enters the course offering number.
 	 */
 	private JTextField courseOffering;
 	/**
 	 * Label for the courseOffering text field.
 	 */
 	private JLabel courseOfferingLabel;
-
 	/**
-	 * 
+	 * Text field where user enters the offering capacity.
+	 */
+	private JTextField sectionCap;
+	/**
+	 * Label for the sectionCap text field.
+	 */
+	private JLabel sectionCapLabel;
+	/**
+	 * Text area where the current course list can be viewed.
 	 */
 	private JTextArea courseContent;
 	/**
-	 * 
+	 * ScrollPane for the course list.
 	 */
 	private JScrollPane studentContentScroll;
-
 	/**
-	 * 
+	 * Panel for the left side of the frame.
 	 */
 	private JPanel west;
 	/**
-	 * 
+	 * Panel for the right side of the frame.
 	 */
 	private JPanel east;
-
+	/**
+	 * Panel for the top side of the frame.
+	 */
+	private JPanel north;
 	/**
 	 * Button to add course to the catalog.
 	 */
 	private JButton addButton;
-
-
-	private JTextField sectionCap;
-
-	private JLabel sectionCapLabel;
-
+	/**
+	 * Button to refresh the catalog list in the text area.
+	 */
+	private JButton showCatalogueButton;
+	/**
+	 * Top label for the course content area.
+	 */
 	private JLabel topLabel;
 
-	private JPanel north;
-
-	private JButton showCatalogueButton;
-
-	
-
 	/**
-	 * Constructs a dialog pane where user can add or remove a course from a student.
+	 * Constructs a dialog pane where user can add a new course offering to the catalog.
 	 * @param owner JFrame which owns the created dialog pane.
 	 */
 	public AddCourseOfferingWindow(MainFrame owner) {
@@ -93,7 +100,7 @@ public class AddCourseOfferingWindow extends JDialog {
 	}
 
 	/**
-	 * Constructs a dialog pane where user can add or remove a course from a student.
+	 * Constructs a dialog pane where user can add a new course offering to the catalog.
 	 * @param owner JFrame which owns the created dialog pane.
 	 * @param title Name of the dialog pane.
 	 */
@@ -183,18 +190,25 @@ public class AddCourseOfferingWindow extends JDialog {
 		courseContent.setText(info);
 		courseContent.setCaretPosition(0);
 	}
-
+	/**
+	 * Gets the addButton JButton.
+	 * @return the addButton
+	 */
 	public JButton getAddButton() {
 		return addButton;
 	}
 	
 	/**
+	 * Gets the showCatalogueButton JButton.
 	 * @return the showCatalogueButton
 	 */
 	public JButton getShowCatalogueButton() {
 		return showCatalogueButton;
 	}
-
+	/**
+	 * Displays the message given by message to the user in a JOptionPane
+	 * @param message message to be displayed
+	 */
 	public void displayMessage(String message) {
 		JOptionPane.showMessageDialog(this, message);
 	}

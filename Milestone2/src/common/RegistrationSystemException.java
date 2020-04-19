@@ -15,7 +15,6 @@ public class RegistrationSystemException extends Exception {
 
 
 	public RegistrationSystemException() {
-		// TODO Auto-generated constructor stub
 	}
 
 

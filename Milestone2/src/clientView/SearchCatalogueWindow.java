@@ -5,16 +5,21 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
+ * The dialog window of the GUI to search through the course catalogue.
+ * 
  * Provides the member variables and methods required for the creation of and interaction with the search catalogue
  * pop-up window.
+ * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
- * @since April 10 2020
- * @version 0.1
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class SearchCatalogueWindow extends JDialog{
+	/**
+	 * Default not used.
+	 */
 	private static final long serialVersionUID = 1L;
-	
 	/*
 	 * Text field where user enters the course name.
 	 */
@@ -150,6 +155,11 @@ public class SearchCatalogueWindow extends JDialog{
 	}
 	
 //Getters and setters
+	
+	/**
+	 * Gets the submitButton JButton.
+	 * @return the submitButton
+	 */
 	public JButton getSubmitButton() {
 		return submitButton;
 	}

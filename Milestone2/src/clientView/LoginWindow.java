@@ -19,30 +19,62 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 /**
- * Not used for Milestone 2.
+ * Login dialog window of the GUI.
+ * 
+ * Provides the member variables and methods required for the creation of and interaction 
+ * with the login window of the course registration system. The user can login as an admin or student.
+ * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class LoginWindow extends JDialog {
 	/**
-	 * 
+	 * Default not used
 	 */
 	private static final long serialVersionUID = 1L;
-	 
-	//private JButton returnToMain;
+	/**
+	 * Button to submit username and password
+	 */
 	private JButton login;
-	
+	/**
+	 * Text field for the username to be entered into
+	 */
 	private JTextField username;
+	/**
+	 * Password text field for the password to be entered into
+	 */
 	private JPasswordField password;
-	
+	/**
+	 * Radio button to used to login as an admin
+	 */
 	private JRadioButton admin;
+	/**
+	 * Radio button to used to login as an student
+	 */
 	private JRadioButton student;
-	
+	/**
+	 * The top panel of the frame
+	 */
 	private JPanel north;
+	/**
+	 * The center panel of the frame
+	 */
 	private JPanel center;
+	/**
+	 * The bottom panel of the frame
+	 */
 	private JPanel south;
+	/**
+	 * The top label of the frame to welcome the user to the login window
+	 */
 	private JLabel topLabel;
-	
+	/**
+	 * Constructs a dialog pane where user can login as a student or admin.
+	 * @param owner JFrame which owns the created dialog pane.
+	 * @param title Name of the dialog pane.
+	 */
 	public LoginWindow(JFrame owner, String title)
 	{
 		super(owner, title);
@@ -99,21 +131,38 @@ public class LoginWindow extends JDialog {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
 	}
-
+	/**
+	 * Gets the login JButton.
+	 * @return the login button
+	 */
 	public JButton getLoginButton() {
 		return login;
 	}
+	/**
+	 * Returns the username entered by the user
+	 * @return String containing the username
+	 */
 	public String getUsername() {
 		return username.getText();
 	}
+	/**
+	 * Returns the password entered by the user
+	 * @return String containing the password
+	 */
 	public String getPassword() {
 		return String.valueOf(password.getPassword());
 	}
-
+	/**
+	 * Displays the message given by message to the user in a JOptionPane
+	 * @param message message to be displayed
+	 */
 	public void displayError(String message) {
 		JOptionPane.showMessageDialog(this, message);
 	}
-
+	/**
+	 * Returns the type of user login that was selected
+	 * @return whether student is selected
+	 */
 	public boolean isStudent() {
 		return student.isSelected();
 	}

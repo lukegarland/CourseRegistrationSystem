@@ -23,14 +23,14 @@ import javax.swing.UnsupportedLookAndFeelException;
  * update the GUI, and get the button content.
  * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
- * @version 0.1
- * @since April 11, 2020
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class MainFrame extends JFrame {
 
 	/**
-	 * Default
+	 * Default not used
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
@@ -94,10 +94,11 @@ public class MainFrame extends JFrame {
 	 * Id of the student if launched in student mode
 	 */
 	private int studentId;
-	
+
 
 	/**
-	 * @throws HeadlessException
+	 * Constructs an empty and invisible frame for the login window.
+	 * @throws HeadlessException if a Headless exception occurs
 	 */
 	public MainFrame() throws HeadlessException {
 
@@ -109,8 +110,8 @@ public class MainFrame extends JFrame {
 		}
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		
+
+
 		//Sets the size and visibility
 		pack();
 
@@ -118,6 +119,11 @@ public class MainFrame extends JFrame {
 
 
 	}
+	/**
+	 * Constructs the main window or frame of the GUI. The window will be formatted in an admin 
+	 * or student view based on the String given by message.
+	 * @param message message from the server containing whether the user is an admin or student
+	 */
 	public MainFrame(String message) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -127,7 +133,7 @@ public class MainFrame extends JFrame {
 		}
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		//Setting up whether mainFrame is in admin or student mode 
 		String [] content = message.split("\\s+");
 		if(content[0].equals("admin"))
@@ -136,14 +142,14 @@ public class MainFrame extends JFrame {
 			isAdmin = false;
 			studentId = Integer.parseInt(content[1]);
 		}
-				
+
 		//Initializing the Panels
 		topButtonPanel = new JPanel();
 		bottomButtonPanel = new JPanel();
 		topPanel = new JPanel();
 		centerPanel = new JPanel();
-		
-		
+
+
 		//Initializing the individual components
 		if(isAdmin)
 			topLabel = new JLabel("Welcome to the Admin Registration System");
@@ -169,12 +175,12 @@ public class MainFrame extends JFrame {
 
 		bottomButtonPanel.add(viewStudentRegs);
 		bottomButtonPanel.add(searchCatalogue);
-		
+
 		if(isAdmin)
 			bottomButtonPanel.add(addOffering);
 
 		centerPanel.add(scrollPane);
-		
+
 		GridLayout allButtons = new GridLayout(2,3);
 		buttonPanel = new JPanel(allButtons);
 		buttonPanel.add(topButtonPanel);
@@ -183,7 +189,7 @@ public class MainFrame extends JFrame {
 		//Adding the panels to the JFrame in the desired location
 		add(topPanel, BorderLayout.NORTH);
 		add(buttonPanel, BorderLayout.SOUTH);
-		
+
 		pack();
 		setVisible(true);
 	}
@@ -198,39 +204,57 @@ public class MainFrame extends JFrame {
 		catalogueContent.setCaretPosition(0); //Scroll to top
 		pack();
 	}
-	
+
 	/***GETTERS AND SETTERS***/
+
+	/**
+	 * Gets the addRemove JButton.
+	 * @return the addRemove button
+	 */
 	public JButton getAddRemove() {
 		return addRemove;
 	}
-
+	/**
+	 * Gets the searchCatalogue JButton.
+	 * @return the searchCatalogue button
+	 */
 	public JButton getSearchCatalogue() {
 		return searchCatalogue;
 	}
-
+	/**
+	 * Gets the viewStudentRegs JButton.
+	 * @return the viewStudentRegs button
+	 */
 	public JButton getViewStudentRegs() {
 		return viewStudentRegs;
 	}
+	/**
+	 * Gets the showCatalog JButton.
+	 * @return the showCatalog button
+	 */
 	public JButton getShowCatalogue() {
 		return showCatalogue;
 	}
 	/**
+	 * Gets the addOffering JButton.
+	 * @return the addOffering button
+	 */
+	public JButton getAddOffering() {
+		return addOffering;
+	}
+	/**
+	 * Returns whether the user is an admin or student.
 	 * @return the isAdmin
 	 */
 	public boolean isAdmin() {
 		return isAdmin;
 	}
 	/**
+	 * Gets the id of the student if logged in as a student
 	 * @return the studentId
 	 */
 	public String getStudentId() {
 		return Integer.toString(studentId);
 	}
-	/**
-	 * @return the addOffering
-	 */
-	public JButton getAddOffering() {
-		return addOffering;
-	}
-
+	
 }

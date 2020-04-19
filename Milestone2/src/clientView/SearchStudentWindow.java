@@ -5,16 +5,21 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
+ * The dialog window of the GUI to search for a student's courses.
+ * 
  * Provides the member variables and methods required for the creation of and interaction with the search student
  * pop-up window.
+ * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
- * @since April 10 2020
- * @version 0.1
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class SearchStudentWindow extends JDialog{
+	/**
+	 * Default not used.
+	 */
 	private static final long serialVersionUID = 1L;
-
 	/*
 	 * Text field where user enters the student's name.
 	 */
@@ -86,7 +91,9 @@ public class SearchStudentWindow extends JDialog{
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		pack();
 	}
-	
+	/**
+	 * Populates the remaining of the dialog pane when a student's name or id has been input.
+	 */
 	public void submitPressed() {
 		if(center != null)
 		{
@@ -122,6 +129,10 @@ public class SearchStudentWindow extends JDialog{
 	}
 	
 //Getters and setters.
+	/**
+	 * Gets the submitButton JButton.
+	 * @return the submitButton
+	 */
 	public JButton getSubmitButton() {
 		return submitButton;
 	}
