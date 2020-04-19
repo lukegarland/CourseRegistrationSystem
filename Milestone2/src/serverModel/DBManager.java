@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * Provides methods to query a mySQL database to gather student and course information.
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
- * @version 0.1
+ * @version 1.1
  * @since April 16 2020
  *
  */
@@ -190,10 +190,6 @@ public class DBManager implements IDBCredentials{
 		this.courseList.setCourseList(courseList);
 		close();
 	}
-
-
-
-
 
 //Below are methods to help populate the DB when first being run on different machines.
 
