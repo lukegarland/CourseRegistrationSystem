@@ -158,7 +158,6 @@ public class DBManager implements IDBCredentials{
 	public void loadCourseList() {
 		initializeConnection();
 		ArrayList<Course> courseList = new ArrayList<Course>();
-		courseList = new ArrayList<Course>();
 		
 		try {
 			String query = "select id, name, num, off1, off1cap, off2, off2cap from mydb.course";

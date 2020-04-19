@@ -13,15 +13,14 @@ import serverModel.Student;
  */
 public class ModelController {
 
-	
+
 	private DBManager db;
-	
+
 	public ModelController(DBManager db) {
 		this.db = db;
-		// TODO Auto-generated constructor stub
 	}
 
-	
+
 
 	/**
 	 * View the student's courses.
@@ -33,15 +32,15 @@ public class ModelController {
 
 		if(content.length == 0)
 			throw new RegistrationSystemException(invalidInputError());
-		
+
 		Student st = searchStudent(String.join(" ", content)); //Rejoin content in case query is name (e.g. Michael Smith)
-		
+
 		if(st == null)
 		{
 			throw new RegistrationSystemException(studentNotFoundError());
 		}
-		
-		
+
+
 		return st.printCourses();
 	}
 
@@ -52,12 +51,12 @@ public class ModelController {
 	 */
 	private Student searchStudent(String query)
 	{
-		
+
 		if(query.matches("\\d+"))// One or more digits...Searching by id number.
 		{
 			int id = Integer.parseInt(query);
-			
-			
+
+
 			for(Student s : db.getStudentList())
 			{
 				if(id == s.getStudentId())
@@ -72,13 +71,13 @@ public class ModelController {
 				if(name.equals(s.getStudentName()))
 					return s;
 			}
-			
+
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * @return the course catalog in a formatted string
 	 */
@@ -98,20 +97,20 @@ public class ModelController {
 
 		if(content.length != 3)
 			throw new RegistrationSystemException(invalidInputError());
-		
+
 		String id = content[0];
 		String courseName = content[1];
 
 		int courseNumber = Integer.parseInt(content[2]);
 
-		
+
 		Student st = searchStudent(id);
-	
+
 		if(st == null)
 		{
 			throw new RegistrationSystemException(studentNotFoundError());
 		}
-		
+
 		for(Registration r: st.getStudentRegList())
 		{
 			Course c = r.getTheOffering().getTheCourse();
@@ -122,8 +121,8 @@ public class ModelController {
 				return "Removed student from course!";
 			}
 		}
-		
-		
+
+
 		throw new RegistrationSystemException(courseNotFoundError());
 	}
 
@@ -137,33 +136,33 @@ public class ModelController {
 	{
 		if(content.length != 4)
 			throw new RegistrationSystemException(invalidInputError());
-		
+
 		String id = content[0];
 		String courseName = content[1];
 		int courseNumber = Integer.parseInt(content[2]);
 		int sectionNumber = Integer.parseInt(content[3]);
-		
+
 		Student st = searchStudent(id);
-		
+
 		if(st == null)
 		{
-	
+
 			throw new RegistrationSystemException(studentNotFoundError());
 		}
-		
-		
+
+
 		Course c = db.getCatalogue().searchCat(courseName, courseNumber);
-				
+
 		if (c == null)
 		{
 			throw new RegistrationSystemException(courseNotFoundError());
 		}else if (sectionNumber >= c.getNumberOfOfferings())
 			throw new RegistrationSystemException(offeringDoesNotExistError());
-		
-		
+
+
 		Registration r = new Registration();
 		r.completeRegistration(st, c.getCourseOfferingAt(sectionNumber));
-		
+
 		return "Student registered in course";
 	}
 
@@ -173,22 +172,22 @@ public class ModelController {
 	 * @throws RegistrationSystemException if course is not found
 	 */
 	protected String searchCourseCatalogue(String[] content) throws RegistrationSystemException {
-		
+
 		if(content.length != 2)
 			throw new RegistrationSystemException(invalidInputError());
-		
-		
+
+
 		String courseName = content[0];
 		int courseNumber = Integer.parseInt(content[1]);
 
-			Course c = db.getCatalogue().searchCat(courseName, courseNumber);
+		Course c = db.getCatalogue().searchCat(courseName, courseNumber);
 		if(c == null)
 			throw new RegistrationSystemException(courseNotFoundError());
-		
+
 		return c.toString();
 
 	}
-	
+
 	protected static String invalidInputError()
 	{
 		return "Error: Invalid input";
@@ -200,12 +199,12 @@ public class ModelController {
 		return "Error: Offering does not exist";
 	}
 
-	
+
 	protected static String studentNotFoundError()
 	{
 		return "Error: Student not found";
 	}
-	
+
 	protected static String courseNotFoundError()
 	{
 		return "Course not found";
@@ -234,9 +233,33 @@ public class ModelController {
 
 
 	public String addOffering(String[] content) {
-		// TODO Auto-generated method stub
-		return null;
+		String courseName = content[0];
+		String courseNum = content[1];
+		String courseOffering = content[2];
+		String sectionCap = content[3];
+		int num, capacity, offering;
+		try {
+			num = Integer.parseInt(courseNum);
+			offering = Integer.parseInt(courseOffering);
+			capacity = Integer.parseInt(sectionCap);
+		}catch(NumberFormatException e) {
+			return "Invalid input. Course number, offering and seciton capacity must be valid integers.";
+		}
+		Course newCourse = new Course(courseName, num);
+		Course test = db.getCatalogue().searchCat(courseName, num);
+		if(test != null) {
+			if(test.getCourseOfferingAt(offering) != null)
+				return "Offering number: " + courseOffering + " already exists.";
+			db.getCatalogue().createCourseOffering(test, offering, capacity);
+		}
+		else {
+
+			db.getCatalogue().createCourseOffering(newCourse, offering, capacity);
+			db.getCatalogue().getCourseList().add(newCourse);
+		}
+
+		return "Added Course: " + courseName + " " + courseNum + "\nOffering: " + courseOffering + "\nCapacity: " + sectionCap;
 	}
 
-	
+
 }

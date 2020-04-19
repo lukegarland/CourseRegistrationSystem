@@ -80,7 +80,9 @@ public class AddCourseOfferingWindow extends JDialog {
 
 	private JPanel north;
 
-	private JLabel contentLabel;
+	private JButton showCatalogueButton;
+
+	
 
 	/**
 	 * Constructs a dialog pane where user can add or remove a course from a student.
@@ -137,6 +139,7 @@ public class AddCourseOfferingWindow extends JDialog {
 
 
 		addButton = new JButton("Add course");
+		showCatalogueButton = new JButton("Current Catalogue");
 
 		east.add(courseNameLabel);
 		east.add(courseName);
@@ -150,13 +153,12 @@ public class AddCourseOfferingWindow extends JDialog {
 		east.add(sectionCapLabel);
 		east.add(sectionCap);
 
-		east.add(new JLabel(" "));
+		east.add(showCatalogueButton);
 		east.add(addButton);
 		add(east, BorderLayout.EAST);
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		pack();
-		setVisible(true);
 		
 	}
 
@@ -177,13 +179,24 @@ public class AddCourseOfferingWindow extends JDialog {
 	 * Writes to the courseContent text area.
 	 * @param info String to be written to text area.
 	 */
-	public void writeToStudentContent(String info) {
+	public void writeToCourseContent(String info) {
 		courseContent.setText(info);
 		courseContent.setCaretPosition(0);
 	}
 
 	public JButton getAddButton() {
 		return addButton;
+	}
+	
+	/**
+	 * @return the showCatalogueButton
+	 */
+	public JButton getShowCatalogueButton() {
+		return showCatalogueButton;
+	}
+
+	public void displayMessage(String message) {
+		JOptionPane.showMessageDialog(this, message);
 	}
 }
 

@@ -60,11 +60,29 @@ public class Listeners
 	
 	
 	private void addOffering() {
-		// TODO Auto-generated method stub
+		
 		AddCourseOfferingWindow addOfferingDialog = new AddCourseOfferingWindow(mainFrame);
 		String response = client.communicate(MessageTypes.getCatalogue, "");
-		addOfferingDialog.writeToStudentContent(response);
+		addOfferingDialog.writeToCourseContent(response);
 		
+		addOfferingDialog.getShowCatalogueButton().addActionListener((ActionEvent e) -> {
+			String r1 = client.communicate(MessageTypes.getCatalogue, "");
+			addOfferingDialog.writeToCourseContent(r1);
+		});
+		
+		
+		addOfferingDialog.getAddButton().addActionListener((ActionEvent e) -> {
+			
+			String[] results = addOfferingDialog.getCourseInfo();
+			String r1 = client.communicate(MessageTypes.addOffering, results[0] + " " + results[1] + " " + results[2] + " " + results[3]);
+			
+			if(r1 != null)
+				addOfferingDialog.displayMessage(r1);
+			else 
+				addOfferingDialog.setVisible(false);
+
+		});
+		addOfferingDialog.setVisible(true);
 	}
 
 
