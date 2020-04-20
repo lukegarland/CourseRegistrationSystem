@@ -2,6 +2,7 @@ package clientView;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+
 /**
  * Main window of the GUI.
  * 
@@ -21,14 +23,14 @@ import javax.swing.UnsupportedLookAndFeelException;
  * update the GUI, and get the button content.
  * 
  * @author C. Faith, L. Garland, G. Raymond-Fauteux
- * @version 0.1
- * @since April 11, 2020
+ * @since April 19 2020
+ * @version 1.1
  *
  */
 public class MainFrame extends JFrame {
 
 	/**
-	 * Default
+	 * Default not used
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
@@ -57,13 +59,21 @@ public class MainFrame extends JFrame {
 	 */
 	private JButton searchCatalogue;
 	/**
+	 * Button used to add a new course offering in admin mode
+	 */
+	private JButton addOffering;
+	/**
 	 * Panel contains the first two buttons
 	 */
 	private JPanel topButtonPanel;
 	/**
-	 * Panel containing the last two buttons
+	 * Panel containing the last three buttons
 	 */
 	private JPanel bottomButtonPanel;
+	/**
+	 * Panel containing all buttons
+	 */
+	private JPanel buttonPanel;
 	/**
 	 * Panel containing the center text 
 	 */
@@ -76,13 +86,21 @@ public class MainFrame extends JFrame {
 	 * Scroll pane for the center panel
 	 */
 	private JScrollPane scrollPane;
-	
 	/**
-	 * @throws HeadlessException
+	 * Controls whether the MainFrame is launched in admin or student mode
+	 */
+	private boolean isAdmin;
+	/**
+	 * Id of the student if launched in student mode
+	 */
+	private int studentId;
+
+
+	/**
+	 * Constructs an empty and invisible frame for the login window.
+	 * @throws HeadlessException if a Headless exception occurs
 	 */
 	public MainFrame() throws HeadlessException {
-		//Future work
-		//LoginWindow temp = new LoginWindow(this, "Login Window");
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -92,48 +110,88 @@ public class MainFrame extends JFrame {
 		}
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
+
+		//Sets the size and visibility
+		pack();
+
+		setVisible(false);
+
+
+	}
+	/**
+	 * Constructs the main window or frame of the GUI. The window will be formatted in an admin 
+	 * or student view based on the String given by message.
+	 * @param message message from the server containing whether the user is an admin or student
+	 */
+	public MainFrame(String message) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+		setLayout(new BorderLayout());
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		//Setting up whether mainFrame is in admin or student mode 
+		String [] content = message.split("\\s+");
+		if(content[0].equals("admin"))
+			isAdmin = true;
+		else {
+			isAdmin = false;
+			studentId = Integer.parseInt(content[1]);
+		}
+
 		//Initializing the Panels
 		topButtonPanel = new JPanel();
 		bottomButtonPanel = new JPanel();
 		topPanel = new JPanel();
 		centerPanel = new JPanel();
-		
+
+
 		//Initializing the individual components
-		topLabel = new JLabel("Main Window");
-		
+		if(isAdmin)
+			topLabel = new JLabel("Welcome to the Admin Registration System");
+		else
+			topLabel = new JLabel("Welcome to the Student Registration System");
+
 		catalogueContent = new JTextArea(20,50);
 		catalogueContent.setEditable(false);
 		catalogueContent.setFont(new Font("Comic Sans MS", Font.PLAIN,10));
 		scrollPane = new JScrollPane(catalogueContent);
-		
+
 		showCatalogue = new JButton("Show Catalogue");
 		addRemove = new JButton("Add or Remove a Course");
 		viewStudentRegs = new JButton("View Student Registrations");
 		searchCatalogue = new JButton("Search Through Catalogue");
-		
+		if(isAdmin)
+			addOffering = new JButton("Add New Course Offering");
+
 		//Adding the components to their final panels
 		topPanel.add(topLabel);
 		topButtonPanel.add(showCatalogue);
 		topButtonPanel.add(addRemove);
-		
+
 		bottomButtonPanel.add(viewStudentRegs);
 		bottomButtonPanel.add(searchCatalogue);
-		
+
+		if(isAdmin)
+			bottomButtonPanel.add(addOffering);
+
 		centerPanel.add(scrollPane);
-		
-		topButtonPanel.add(bottomButtonPanel);
-		
+
+		GridLayout allButtons = new GridLayout(2,3);
+		buttonPanel = new JPanel(allButtons);
+		buttonPanel.add(topButtonPanel);
+		buttonPanel.add(bottomButtonPanel);
+
 		//Adding the panels to the JFrame in the desired location
 		add(topPanel, BorderLayout.NORTH);
-		add(topButtonPanel, BorderLayout.SOUTH);
-		add(centerPanel, BorderLayout.CENTER);
-		
-		//Sets the size and visibility
+		add(buttonPanel, BorderLayout.SOUTH);
+
 		pack();
 		setVisible(true);
-		
-		
 	}
 	/**
 	 * Sets the text to the String given by content
@@ -141,24 +199,62 @@ public class MainFrame extends JFrame {
 	 */
 	public void fillCatalogueContent(String content)
 	{
+		add(centerPanel, BorderLayout.CENTER);
 		catalogueContent.setText(content);
 		catalogueContent.setCaretPosition(0); //Scroll to top
+		pack();
 	}
+
 	/***GETTERS AND SETTERS***/
+
+	/**
+	 * Gets the addRemove JButton.
+	 * @return the addRemove button
+	 */
 	public JButton getAddRemove() {
 		return addRemove;
 	}
-	
+	/**
+	 * Gets the searchCatalogue JButton.
+	 * @return the searchCatalogue button
+	 */
 	public JButton getSearchCatalogue() {
 		return searchCatalogue;
 	}
-	
+	/**
+	 * Gets the viewStudentRegs JButton.
+	 * @return the viewStudentRegs button
+	 */
 	public JButton getViewStudentRegs() {
 		return viewStudentRegs;
 	}
+	/**
+	 * Gets the showCatalog JButton.
+	 * @return the showCatalog button
+	 */
 	public JButton getShowCatalogue() {
 		return showCatalogue;
 	}
+	/**
+	 * Gets the addOffering JButton.
+	 * @return the addOffering button
+	 */
+	public JButton getAddOffering() {
+		return addOffering;
+	}
+	/**
+	 * Returns whether the user is an admin or student.
+	 * @return the isAdmin
+	 */
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+	/**
+	 * Gets the id of the student if logged in as a student
+	 * @return the studentId
+	 */
+	public String getStudentId() {
+		return Integer.toString(studentId);
+	}
 	
-
 }
