@@ -7,7 +7,7 @@ package serverModel;
  * @version 1.1
  *
  */
-public interface IDBCredentials {
+public interface JDBCredentials {
 
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  

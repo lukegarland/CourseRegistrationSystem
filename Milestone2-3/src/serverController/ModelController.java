@@ -265,8 +265,9 @@ public class ModelController {
 	 * Adds a new course offering. Only available to admin users.
 	 * @param content Course name, number, offering number, and capacity
 	 * @return Response of the attempt to add an offering.
+	 * @throws RegistrationSystemException if invalid content format.
 	 */
-	public String addOffering(String[] content) {
+	protected String addOffering(String[] content) throws RegistrationSystemException {
 		String courseName = content[0];
 		String courseNum = content[1];
 		String courseOffering = content[2];
@@ -277,7 +278,7 @@ public class ModelController {
 			offering = Integer.parseInt(courseOffering);
 			capacity = Integer.parseInt(sectionCap);
 		}catch(NumberFormatException e) {
-			return "Invalid input. Course number, offering and seciton capacity must be valid integers.";
+			throw new RegistrationSystemException("Invalid input. Course number, offering and seciton capacity must be valid integers.");
 		}
 		Course newCourse = new Course(courseName, num);
 		Course test = db.getCatalogue().searchCat(courseName, num);

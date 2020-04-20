@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * @since April 16 2020
  *
  */
-public class DBManager implements IDBCredentials{
+public class DBManager implements JDBCredentials{
 
 	/**
 	 * Serves as the connection to SQL database.
@@ -191,9 +191,16 @@ public class DBManager implements IDBCredentials{
 		close();
 	}
 
+	
+	
+	
+	
+	
+	
+	
 //Below are methods to help populate the DB when first being run on different machines.
 
-	public void createStudentTable() {
+	private void createStudentTable() {
 		String sql = "CREATE TABLE STUDENT " + "(id INTEGER not NULL, " + " name VARCHAR(255), "
 				+ " username VARCHAR(255), " + " password VARCHAR(255), " + " PRIMARY KEY ( id ))";
 
@@ -208,7 +215,7 @@ public class DBManager implements IDBCredentials{
 		System.out.println("Created student table in given database...");
 	}
 
-	public void populateStudentTable() {
+	private void populateStudentTable() {
 		insertUser(1, "Guillaume", "Guillaume1", "password1");
 		insertUser(2, "Aidan", "Aidan2", "password2");
 		insertUser(3, "Michele", "Michele3", "password3");
@@ -222,7 +229,7 @@ public class DBManager implements IDBCredentials{
 		insertUser(42, "Mike", "Mike42", "password42");
 	}
 
-	public void insertUser(int id, String name, String username, String password) {
+	private void insertUser(int id, String name, String username, String password) {
 		try {
 			String query = "INSERT INTO STUDENT (ID,name,username,password) values(?,?,?,?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
@@ -238,7 +245,7 @@ public class DBManager implements IDBCredentials{
 		}
 	}
 
-	public void createCourseTable() {
+	private void createCourseTable() {
 		String sql = "CREATE TABLE COURSE " + "(id INTEGER not NULL, " + " name VARCHAR(255), " + "num INTEGER, "
 				+ " off1 INTEGER," + " off1cap INTEGER, " + " off2 INTEGER, "
 				+ " off2cap INTEGER, " + " PRIMARY KEY ( id ))";
@@ -254,7 +261,7 @@ public class DBManager implements IDBCredentials{
 		System.out.println("Created course table in given database...");
 	}
 
-	public void populateCourseTable() {
+	private void populateCourseTable() {
 		insertCourse(1,"ENGG", 233, 0, 25, 1, 20 );
 		insertCourse(2,"ENGG", 200, 0, 40, 1, 45 );
 		insertCourse(3,"ENGG", 201, 0, 35, 1, 50 );
@@ -265,7 +272,7 @@ public class DBManager implements IDBCredentials{
 		insertCourse(8,"PHYS", 259, 0, 66, 1, 42 );
 	}
 
-	public void insertCourse(int id, String name, int num, int off1, int off1cap, int off2, int off2cap) {
+	private void insertCourse(int id, String name, int num, int off1, int off1cap, int off2, int off2cap) {
 		try {
 			String query = "INSERT INTO COURSE (id,name,num,off1,off1cap,off2,off2cap) values(?,?,?,?,?,?,?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
@@ -284,7 +291,7 @@ public class DBManager implements IDBCredentials{
 		}
 	}
 
-	public void createAdminTable() {
+	private void createAdminTable() {
 		String sql = "CREATE TABLE ADMIN " +  "(id INTEGER not NULL, " +
 				" username VARCHAR(255), " +
 				" password VARCHAR(255), " + " PRIMARY KEY ( id ))";
@@ -300,12 +307,12 @@ public class DBManager implements IDBCredentials{
 		System.out.println("Created admin table in given database...");
 	}
 
-	public void populateAdminTable() {
+	private void populateAdminTable() {
 		insertAdmin(1, "admin","12345");
 		insertAdmin(2, "adminTest","SecurePassword");
 	}
 
-	public void insertAdmin(int id, String username, String password) {
+	private void insertAdmin(int id, String username, String password) {
 		try {
 			String query = "INSERT INTO ADMIN (id,username,password) values(?,?,?)";
 			PreparedStatement pStat = conn.prepareStatement(query);
