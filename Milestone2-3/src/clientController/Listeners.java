@@ -58,9 +58,10 @@ public class Listeners
 		mainFrame.getViewStudentRegs().addActionListener((ActionEvent eee) -> {
 			searchStudentDialog();
 		});
-		mainFrame.getAddOffering().addActionListener((ActionEvent eee) -> {
-			addOffering();
-		});
+		if(mainFrame.isAdmin())
+			mainFrame.getAddOffering().addActionListener((ActionEvent eee) -> {
+				addOffering();
+			});
 	}
 	
 	/**

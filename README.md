@@ -11,7 +11,7 @@ The following bonus marks have been successfully implemented and tested:
 - Create a separate GUI for an “Admin” with the functionality of creating new courses (10 marks)
 
 ## Prerequisites
-You must have a MySQL database running and the relevant information in ```serverModel/JBDCCredentials.java```. To populate the MySQL database with test data, run the class ```serverModel.DBManager```. Ensure there is a schema called 'mydb' and there are no tables in that schema.
+You must have a MySQL database running and the relevant information in ```serverModel/JBDCCredentials.java``` must be correct. To populate the MySQL database with test data, ensure there is a new (empty) schema called 'mydb' and then run the class ```serverModel.DBManager```.
 
 ## Running the project
 3 Options to run this software (located in ```Milestone2-3```), assuming the mySQL database is set up:
@@ -32,12 +32,12 @@ You must have a MySQL database running and the relevant information in ```server
 
     ```
 
-3. Run the server using```Server.jar``` and run the Client using ```Client.jar```. Ensure port 8099 is open on the localhost.
+3. Run the server using ```Server.jar``` and run the Client using ```Client.jar```. Ensure port 8099 is open on the localhost.
 
 
 
 **Notes**:
-- Line 82 in ```clientController/Client.java``` states the serverName and port number. You may change these if the server is not running on the localhost. the server must be on Localhost:8099 if the project is used using option \#3.
+- Line 82 in ```clientController/Client.java``` states the serverName and port number. You may change these if the server is not running on the localhost. The server must be on Localhost:8099 if the project is used using option \#3.
 - Option 2 has been tested on Windows 10 WSL 2 (Ubuntu 18.04.3 LTS on Windows 10 x86_64).
 
 
@@ -48,7 +48,7 @@ You must have a MySQL database running and the relevant information in ```server
 
 * **Guillaume Raymond-Fauteux** - [Github](https://github.com/GuillaumeFISH) - [Email](mailto:guillaume.raymondfau@ucalgary.ca)
 
-See also the list of [contributors](https://github.com/lukegarland/CourseRegistrationSystem/graphs/contributors) who participated and the project's [commit history](https://github.com/lukegarland/CourseRegistrationSystem/commits/master).
+See also the project's [commit history](https://github.com/lukegarland/CourseRegistrationSystem/commits/master).
 
 
 

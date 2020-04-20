@@ -79,7 +79,7 @@ public class Client implements MessageTypes
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
-		Client client = new Client("localhost", 8099);		
+		Client client = new Client("10.0.0.47", 8099);		
 	}
 	/**
 	 * Communicates with the server. A Message object given by messageType and content
